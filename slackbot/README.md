@@ -11,4 +11,10 @@
 
 4) Invite bot in Slack
    Example: "/invite @beepboop"
+
+5) Run program
+   go run main.go
+
+6) Talk to bot in Slack
+   @beepboop "__________"
 ```
