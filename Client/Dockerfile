@@ -1,5 +1,5 @@
 FROM golang:latest
 WORKDIR /app
 # Now just add the binary
-ADD apibin /app/
-ENTRYPOINT ["./apibin"]
+ADD clientbin /app/
+ENTRYPOINT ["./clientbin"]
