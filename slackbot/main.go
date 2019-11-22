@@ -1,7 +1,16 @@
-package slackbot
+package main
 
-import "fmt"
+import (
+	"math/rand"
+	"time"
+
+	"github.com/190930-UTA-CW-Go/project3/slackbot/bot"
+)
 
 func main() {
-	fmt.Println("Hello from the Slackbot")
+	// Set RNG Seed
+	rand.Seed(time.Now().UTC().UnixNano())
+
+	// Start the bot
+	bot.StartBot()
 }
