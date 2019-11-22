@@ -1,0 +1,20 @@
+{
+    "Information": {
+        "Name": "Example Portfolio",
+        "Title": "Programmer",
+        "Email": "email@email.com",
+        "Phone": "1234567890"
+    },
+    "About": {
+        "Aboutme": "This is a sample portfolio generated from the code. View README for more information."
+    },
+    "Education": {
+        "College": "Arlington Public College",
+        "Degree": "Gender Studies"
+    },
+    "Project": {
+        "Name": "Project 3 Portfolio Project",
+        "Tech": "All of them",
+        "Desc": "Combined Nathan's API-HTMLFORM code with Garner's HTMLFORM-JSON code. "
+    }
+}
