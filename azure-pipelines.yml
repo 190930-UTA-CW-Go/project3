@@ -35,7 +35,7 @@ steps:
         dep ensure
     fi
     cd API
-    go build -o devapp .
+    go build -o devbin .
   workingDirectory: '$(modulePath)'
   displayName: 'Get dependencies, then build'
 
