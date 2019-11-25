@@ -1,4 +1,4 @@
-package client
+package main
 
 import (
 	"encoding/json"
@@ -31,17 +31,39 @@ type portfolioInfo struct {
 //HTML template passing in values from inputdata.json
 
 func main() {
-	http.HandleFunc("/download", downloadFunc)
+	http.HandleFunc("/", homePage)
 	http.HandleFunc("/page", portfoliopage)
-	fmt.Println(" Open browser to localhost:7004")
+	http.HandleFunc("/select", selection)
+	fmt.Println(" Open browser to localhost:7004/")
 	http.ListenAndServe(":7004", nil)
 
 }
 
+// homePage is the handler for what you see when you first open the browser
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("home page")
+	temp, err := template.ParseFiles("index.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
+
+// selection is the handler for which user you want to select
+func selection(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("selection page")
+	temp, err := template.ParseFiles("templates/select.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
+
+// Not sure of the function of this.
 func downloadFunc(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("running downloadfunc")
 	GettingFile("Portfolios", "Example Portfolio.json")
-	temp, err := template.ParseFiles("download.html")
+	temp, err := template.ParseFiles("templates/download.html")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -74,7 +96,7 @@ func portfoliopage(response http.ResponseWriter, request *http.Request) {
 	// 	Title: values.Title,
 	// }
 
-	temp, _ := template.ParseFiles("page.html")
+	temp, _ := template.ParseFiles("templates/page.html")
 
 	temp.Execute(response, values)
 
