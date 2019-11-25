@@ -1,7 +1,7 @@
 $RevatureGo
 ========
 
-$RevatureGo will replace the portfolio system on RevaturePro by making a better interface and 
+$RevatureGo will replace the portfolio system on RevaturePro by making a better interface and ...
 
 Look how easy it is to use:
 
