@@ -9,58 +9,6 @@ import (
 	"strings"
 )
 
-//Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
-type Portfolio struct {
-	Information Information
-	About       About
-	Education   Education
-	Project     Project
-	Status      string
-}
-
-//Information stores all of the relevant info on the person creating the portfolio.
-type Information struct {
-	Name  string `json:"Name"`
-	Title string `json:"Title"`
-	Email string `json:"Email"`
-	Phone string `json:"Phone"`
-}
-
-//About stores the text the user enters in the "About Me" field.
-type About struct {
-	Aboutme string `json:"Aboutme"`
-}
-
-//Education stores the college the user attended and the degree they got, if any.
-type Education struct {
-	College string `json:"College"`
-	Degree  string `json:"Degree"`
-}
-
-//Project stores information on the user's projects that they have completed, if any.
-type Project struct {
-	Name string `json:"Name"`
-	Tech string `json:"Tech"`
-	Desc string `json:"Desc"`
-}
-
-/*Global variables for each struct for use in different functions.*/
-
-//Stores the Portfolio struct, which stores all other structs.
-var portfolio = Portfolio{}
-
-//Stores the Infomation struct.
-var info = Information{}
-
-//Stores the About struct.
-var about = About{}
-
-//Stores the Education struct.
-var education = Education{}
-
-//Stores the Project struct.
-var project = Project{}
-
 func main() {
 	http.Handle("/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
@@ -71,7 +19,7 @@ func main() {
 
 //The portfolioform function displays the portfolio form at localhost:8080/portfolioform
 func portfolioform(response http.ResponseWriter, request *http.Request) {
-	temp, err := template.ParseFiles("html/portfolioform.html")
+	temp, err := template.ParseFiles("templates/portfolioform.html")
 	if err != nil {
 		panic(err)
 	}
@@ -80,7 +28,7 @@ func portfolioform(response http.ResponseWriter, request *http.Request) {
 
 //The formsubmitted function lets the user know their portfolio was submitted successfully.
 func formsubmitted(response http.ResponseWriter, request *http.Request) {
-	temp, err := template.ParseFiles("html/formsubmitted.html")
+	temp, err := template.ParseFiles("templates/formsubmitted.html")
 	if err != nil {
 		panic(err)
 	}
@@ -125,7 +73,7 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	}
 	f.Write(b)
 	f.Close()
-	http.ServeFile(response, request, "html/formsubmitted.html")
+	http.ServeFile(response, request, "templates/formsubmitted.html")
 
 	//These show in the console that the program has received the information entered in the form.
 	fmt.Println(portfolio.Information)

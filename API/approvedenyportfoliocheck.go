@@ -1,5 +1,6 @@
 package main
 
+/*
 import (
 	"encoding/json"
 	"fmt"
@@ -82,6 +83,7 @@ func main() {
 
 	/* 	Up to this point, "data" is a new json file that contains the exact information of the
 	old json file. If a choice 1 or 2 is made, Status will be changed before json file is remade.*/
+/*
 	switch choice {
 	case 1:
 		data.Status = "APPROVED"
@@ -101,3 +103,4 @@ func main() {
 	f.Write(b)
 	f.Close()
 }
+*/
