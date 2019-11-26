@@ -10,10 +10,10 @@ spec:
         app: revgo
     spec:
       containers:
-      - name: revgocont
+      - name: revgoclient
         image: revgoproject3/client
-      - name: revgocont
+      - name: revgoapi
         image: revgoproject3/api
-      - name: revgocont
+      - name: revgobots
         image: revgoproject3/slackbot
        
