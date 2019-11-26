@@ -7,7 +7,6 @@ spec:
   template:
     metadata:
       labels: revgoproject3
-        app: revgo
     spec:
       containers:
       - name: api
