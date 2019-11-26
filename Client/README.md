@@ -1,4 +1,4 @@
-$RevatureGo
+RevatureGo-Client
 ========
 
 $RevatureGo will replace the portfolio system on RevaturePro by making a better interface and ...
