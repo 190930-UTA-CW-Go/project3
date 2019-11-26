@@ -6,6 +6,7 @@ RevatureGo-API
 - Stores the portfolio information into structs.
 - Saves said information as a json file localy under portfolios.
 - Allows editing of existing portfolios.
+- Sends portfolios to an AWS.
 
 
 
