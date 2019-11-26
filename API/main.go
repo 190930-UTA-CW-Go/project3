@@ -6,6 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	
 )
 
 //Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
@@ -60,6 +61,7 @@ var education = Education{}
 var project = Project{}
 
 func main() {
+	downloadfile.DownloadAWS("laura")
 	http.Handle("/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
 	http.HandleFunc("/formsubmitted", formsubmitted)

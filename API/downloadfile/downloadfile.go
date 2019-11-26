@@ -1,6 +1,6 @@
-package downloadFile
+package downloadfile
 
-import(
+import (
 	"fmt"
 	"log"
 	"os/exec"
@@ -8,7 +8,7 @@ import(
 )
 
 
-func downloadFile(name string){
+func DownloadAWS(name string){
 	
 	folder := strings.Title(strings.ToLower(name))
 	file := strings.ToLower(name)
@@ -23,5 +23,4 @@ func downloadFile(name string){
 
 	}
 
-
-
+	
