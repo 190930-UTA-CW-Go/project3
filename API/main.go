@@ -6,7 +6,7 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	"strings"
+	
 )
 
 //Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
@@ -15,7 +15,6 @@ type Portfolio struct {
 	About       About
 	Education   Education
 	Project     Project
-	Status      string
 }
 
 //Information stores all of the relevant info on the person creating the portfolio.
@@ -62,10 +61,11 @@ var education = Education{}
 var project = Project{}
 
 func main() {
+	downloadfile.DownloadAWS("laura")
 	http.Handle("/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
 	http.HandleFunc("/formsubmitted", formsubmitted)
-	fmt.Println("Open localhost:8080")
+	fmt.Println("Open localhost:8080/portfolioform")
 	http.ListenAndServe(":8080", nil)
 }
 
@@ -85,11 +85,9 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 		panic(err)
 	}
 
-	//Take inputted fullname from profile and use it to name the json file.
+	//Take inputted fullname from profile and use it to name the json file
 	info.Name = request.FormValue("fullname") //Part of information structure of profile.
-	filename := info.Name
-	filename = strings.Replace(filename, " ", "_", -1) //Changes white space to underscores
-	filename = filename + ".json"
+	filename := info.Name + ".json"
 
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
@@ -116,7 +114,6 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	portfolio.About = about
 	portfolio.Education = education
 	portfolio.Project = project
-	portfolio.Status = "UNCHECKED"
 
 	b, err := json.MarshalIndent(portfolio, "", "    ")
 	if err != nil {
@@ -133,5 +130,9 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	fmt.Println(portfolio.Education)
 	fmt.Println(portfolio.Project)
 	fmt.Println(portfolio)
+
 	temp.Execute(response, portfolio)
+
 }
+
+
