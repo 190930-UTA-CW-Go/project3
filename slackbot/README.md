@@ -6,6 +6,7 @@ RevatureGo-Slackbot
 - Bot uses data.go to give a response based upon user input.
 - Makes folders when asked.
 - Starts application when asked.
+- Checks for folders and files and checks their status.
 
 
 
