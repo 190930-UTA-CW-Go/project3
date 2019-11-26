@@ -6,7 +6,8 @@ import (
 	"html/template"
 	"net/http"
 	"os"
-	
+
+	"github.com/190930-UTA-CW-Go/project3/API/downloadfile"
 )
 
 //Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
@@ -134,5 +135,3 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	temp.Execute(response, portfolio)
 
 }
-
-
