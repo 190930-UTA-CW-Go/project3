@@ -16,45 +16,6 @@
         "Name": "Spring Cleaning",
         "Tech": "Mop",
         "Desc": "i cleaned the apartment"
-    }
-}{
-    "Information": {
-        "Name": "tony",
-        "Title": "dude",
-        "Email": "dude@gmai.com",
-        "Phone": "555-555-5555"
-    },
-    "About": {
-        "Aboutme": "Ima dude"
-    },
-    "Education": {
-        "College": "none",
-        "Degree": "arts n crafts"
-    },
-    "Project": {
-        "Name": "Spring Cleaning",
-        "Tech": "Mop",
-        "Desc": "i cleaned the apartment"
-    },
-    "Status": "UNCHECKED"
-}{
-    "Information": {
-        "Name": "tony",
-        "Title": "dude",
-        "Email": "dude@gmai.com",
-        "Phone": "555-555-5555"
-    },
-    "About": {
-        "Aboutme": "Ima dude"
-    },
-    "Education": {
-        "College": "ART",
-        "Degree": "arts n crafts"
-    },
-    "Project": {
-        "Name": "Spring Cleaning",
-        "Tech": "Mop",
-        "Desc": "i cleaned the apartment"
     },
     "Status": "UNCHECKED"
 }
