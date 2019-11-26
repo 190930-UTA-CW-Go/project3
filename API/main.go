@@ -131,6 +131,10 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 
 //The editportfolio function takes info from an existing .json file and displays it in the form at localhost:8080/editportfolio
 func editportfolio(response http.ResponseWriter, request *http.Request) {
+	temp, err := template.ParseFiles("templates/editportfolio.html")
+	if err != nil {
+		panic(err)
+	}
 	//Sets the value of the jsonfile variable.
 	jsonfile = "tony.json"
 	//Opens the .json file.
@@ -147,11 +151,6 @@ func editportfolio(response http.ResponseWriter, request *http.Request) {
 	//Prints the values of variables in the console to make sure the .json file was read properly.
 	fmt.Println(portfolio)
 	fmt.Println(portfolio.About.Aboutme)
-	//Loads the webpage after the .json file is parsed.
-	temp, err := template.ParseFiles("templates/editportfolio.html")
-	if err != nil {
-		panic(err)
-	}
 
-	temp.Execute(response, nil)
+	temp.Execute(response, portfolio)
 }
