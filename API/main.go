@@ -52,15 +52,25 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
-var jsonfile string
+var jsonfile string //Sets the value of the jsonfile variable.
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir(".")))
+	//http.Handle("/", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
+	http.HandleFunc("/", index)
+
 	http.HandleFunc("/formsubmitted", formsubmitted)
 	http.HandleFunc("/editportfolio", editportfolio)
+	http.HandleFunc("/chooseportfolio", chooseportfolio)
 	fmt.Println("Open localhost:8080")
 	http.ListenAndServe(":8080", nil)
+}
+
+//index runs the index page
+func index(response http.ResponseWriter, request *http.Request) {
+	temp, _ := template.ParseFiles("templates/index.html")
+	response.Header().Set("Content-Type", "text/html; charset=utf-8")
+	temp.Execute(response, nil)
 }
 
 //The portfolioform function displays the portfolio form at localhost:8080/portfolioform
@@ -140,8 +150,8 @@ func editportfolio(response http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	//Sets the value of the jsonfile variable.
-	jsonfile = "tony.json"
+	jsonfile = request.FormValue("filename") //Part of information structure of profile.
+
 	//Opens the .json file.
 	readjson, readerr := os.Open(jsonfile)
 	if readerr != nil {
@@ -157,5 +167,16 @@ func editportfolio(response http.ResponseWriter, request *http.Request) {
 	fmt.Println(portfolio)
 	fmt.Println(portfolio.About.Aboutme)
 
+	temp.Execute(response, portfolio)
+}
+
+//The chooseportfolio function prompts user to type in portfolio filename to edit.
+func chooseportfolio(response http.ResponseWriter, request *http.Request) {
+	temp, err := template.ParseFiles("templates/chooseportfolio.html")
+	if err != nil {
+		panic(err)
+	}
+	//Take inputted fullname from profile and use it to name the json file.
+	jsonfile = request.FormValue("filename") //Part of information structure of profile.
 	temp.Execute(response, portfolio)
 }

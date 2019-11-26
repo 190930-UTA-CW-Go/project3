@@ -23,3 +23,7 @@
     - Prompt will display name of user's profile as well as status(UNCHECKED, DENIED, or APPROVED)
     - Prompt will ask for action (Change status to APPROVED or DENIED. Or exit without any changes)
     - Program terminates. 
+
+### 11/26
+- User can now edit profiles. 
+- Implemented HTML navigation functionality. 
