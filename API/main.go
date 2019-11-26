@@ -132,7 +132,7 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 //The editportfolio function takes info from an existing .json file and displays it in the form at localhost:8080/editportfolio
 func editportfolio(response http.ResponseWriter, request *http.Request) {
 	//Sets the value of the jsonfile variable.
-	jsonfile = "tony.json"
+	jsonfile = "potfolios/tony.json"
 	//Opens the .json file.
 	readjson, readerr := os.Open(jsonfile)
 	if readerr != nil {
