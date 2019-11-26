@@ -1,11 +1,11 @@
 RevatureGo-API
 ========
 
-Hosted on localhost:8080.
-Presents the user with a form to fill out their portfolio.
-Stores the portfolio information into structs.
-Saves said information as a json file localy under portfolios.
-Allows editing of existing portfolios.
+-Hosted on localhost:8080.
+-Presents the user with a form to fill out their portfolio.
+-Stores the portfolio information into structs.
+-Saves said information as a json file localy under portfolios.
+-Allows editing of existing portfolios.
 
 
 
