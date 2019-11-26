@@ -8,10 +8,12 @@ import (
 )
 
 func main() {
-	fmt.Println("To begin: open localhost:9000")
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/user", userPage)
 	http.HandleFunc("/grader", graderPage)
+
+	fmt.Println("To begin: open localhost:9000")
+	http.ListenAndServe(":9000", nil)
 }
 
 // homePage serves as the handler for the entry point to navigate the entire application
