@@ -1,38 +1,19 @@
-apiVersion: v1
-kind: Pod
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: rss-site
-  labels:
-    app: web
+  name: revgoproject3N
 spec:
-  containers:
-    - name: api
-      image: revgoproject3/api
-      ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: rss-site
-  labels:
-    app: web
-spec:
-  containers:
-    - name: client
-      image: revgoproject3/client
-      ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: rss-site
-  labels:
-    app: web
-spec:
-  containers:
-    - name: slackbot
-      image: revgoproject3/slackbot
-      ports:
-        - containerPort: 80
+  replicas: 3
+  template:
+    metadata:
+      labels: revgoproject3
+        app: revgo
+    spec:
+      containers:
+      - name: api
+        image: revgoproject3/api
+      - name: api
+        image: revgoproject3/api
+      - name: api
+        image: revgoproject3/api
+        
