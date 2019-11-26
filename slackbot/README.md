@@ -7,6 +7,7 @@ RevatureGo-Slackbot
 - Makes folders when asked.
 - Starts application when asked.
 - Checks for folders and files and checks their status.
+- Upload and Download files.
 
 
 
