@@ -5,4 +5,5 @@ RevatureGo-Client
 - Downloads a portfolio using downloads.html.
 - Creates portfolio template on page.html.
 - Creates a blank file named after full path.
-- Inputs information into the file.
+- Inputs portfolio information into the file.
+- Allows you to approve or deny the portfolio
