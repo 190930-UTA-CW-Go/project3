@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -83,6 +84,10 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	filename := info.Name
 	filename = strings.Replace(filename, " ", "_", -1) //Changes white space to underscores
 	filename = filename + ".json"
+
+	//removes file if it previously existed, to overwrite instead of append
+	remote3 := exec.Command("rm", filename)
+	remote3.Run()
 
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
