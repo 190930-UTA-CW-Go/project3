@@ -49,3 +49,4 @@ steps:
     repository: 'revgoproject3/api'
     command: 'buildAndPush'
     Dockerfile: '**/API/Dockerfile'
+    tags: 'latest'
