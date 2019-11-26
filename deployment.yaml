@@ -1,18 +1,19 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: revgoproject3N
+  name: revgo
 spec:
   replicas: 3
   template:
     metadata:
-      labels: revgoproject3
+      labels:
+        app: revgo
     spec:
       containers:
-      - name: api
+      - name: revgocont
+        image: revgoproject3/client
+      - name: revgocont
         image: revgoproject3/api
-      - name: api
-        image: revgoproject3/api
-      - name: api
-        image: revgoproject3/api
-        
+      - name: revgocont
+        image: revgoproject3/slackbot
+       
