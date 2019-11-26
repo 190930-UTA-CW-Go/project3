@@ -19,3 +19,23 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	}
 	temp.Execute(w, nil)
 }
+
+// MakeNew is the handler for creating a new portfolio
+func MakeNew(w http.ResponseWriter, r *http.Request) {
+	hand = path + "new.html"
+	temp, err := template.ParseFiles(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
+
+// Edit is the handler for editing an exitsting portfolio
+func Edit(w http.ResponseWriter, r *http.Request) {
+	hand = path + "edit.html"
+	temp, err := template.ParseFiles(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
