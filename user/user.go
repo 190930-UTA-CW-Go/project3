@@ -111,6 +111,16 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, portfolio)
 }
 
+// Printer is the handler for printing your portfolio
+func Printer(w http.ResponseWriter, r *http.Request) {
+	hand = path + "print.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
+
 // Status is the handler for checking the status of your portfolio
 func Status(w http.ResponseWriter, r *http.Request) {
 	hand = path + "status.html"
