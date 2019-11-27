@@ -1,8 +1,12 @@
 package user
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
+	"strings"
 	"text/template"
 )
 
@@ -13,7 +17,7 @@ var path = "user/templates/"
 // Dash is the handler for the user dashboard
 func Dash(w http.ResponseWriter, r *http.Request) {
 	hand = path + "dash.html"
-	temp, err := template.ParseFiles(path)
+	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -23,7 +27,76 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 // MakeNew is the handler for creating a new portfolio
 func MakeNew(w http.ResponseWriter, r *http.Request) {
 	hand = path + "new.html"
-	temp, err := template.ParseFiles(path)
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
+
+// Submit is the handler for creating a new portfolio
+func Submit(w http.ResponseWriter, r *http.Request) {
+	hand = path + "submit.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	//Take inputted fullname from profile and use it to name the json file.
+	info.Name = r.FormValue("fullname") //Part of information structure of profile.
+	filename := info.Name
+	filename = strings.Replace(filename, " ", "_", -1) //Changes white space to underscores
+	filename = filename + ".json"
+
+	//Creates and opens a new json file in the user's inputted fullname.
+	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	defer f.Close()
+
+	info.Title = r.FormValue("jobtitle")
+	info.Email = r.FormValue("email")
+	info.Phone = r.FormValue("phone")
+
+	about.Aboutme = r.FormValue("aboutme")
+
+	education.College = r.FormValue("college")
+	education.Degree = r.FormValue("degree")
+
+	project.Name = r.FormValue("projectname")
+	project.Tech = r.FormValue("techused")
+	project.Desc = r.FormValue("projectdesc")
+
+	portfolio.Information = info
+	portfolio.About = about
+	portfolio.Education = education
+	portfolio.Project = project
+	portfolio.Status = "UNCHECKED"
+
+	b, err := json.MarshalIndent(portfolio, "", "    ")
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	f.Write(b)
+	f.Close()
+	http.ServeFile(w, r, hand)
+
+	//These show in the console that the program has received the information entered in the form.
+	fmt.Println(portfolio.Information)
+	fmt.Println(portfolio.About)
+	fmt.Println(portfolio.Education)
+	fmt.Println(portfolio.Project)
+	fmt.Println(portfolio)
+	temp.Execute(w, portfolio)
+}
+
+// Status is the handler for checking the status of your portfolio
+func Status(w http.ResponseWriter, r *http.Request) {
+	hand = path + "status.html"
+	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -33,9 +106,56 @@ func MakeNew(w http.ResponseWriter, r *http.Request) {
 // Edit is the handler for editing an exitsting portfolio
 func Edit(w http.ResponseWriter, r *http.Request) {
 	hand = path + "edit.html"
-	temp, err := template.ParseFiles(path)
+	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)
 	}
 	temp.Execute(w, nil)
 }
+
+// The following global variables are used to format protfolios
+
+// Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
+type Portfolio struct {
+	Information Information
+	About       About
+	Education   Education
+	Project     Project
+	Status      string
+}
+
+// Information stores all of the relevant info on the person creating the portfolio.
+type Information struct {
+	Name  string `json:"Name"`
+	Title string `json:"Title"`
+	Email string `json:"Email"`
+	Phone string `json:"Phone"`
+}
+
+// About stores the text the user enters in the "About Me" field.
+type About struct {
+	Aboutme string `json:"Aboutme"`
+}
+
+// Education stores the college the user attended and the degree they got, if any.
+type Education struct {
+	College string `json:"College"`
+	Degree  string `json:"Degree"`
+}
+
+// Project stores information on the user's projects that they have completed, if any.
+type Project struct {
+	Name string `json:"Name"`
+	Tech string `json:"Tech"`
+	Desc string `json:"Desc"`
+}
+
+// These global variables for each struct for use in different packages.
+
+// Portfolio holds the Portfolio struct.
+var portfolio = Portfolio{}
+var info = Information{}
+var about = About{}
+var education = Education{}
+var project = Project{}
+var jsonFile string

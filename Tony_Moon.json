@@ -1,0 +1,21 @@
+{
+    "Information": {
+        "Name": "Tony Moon",
+        "Title": "Couch Potato",
+        "Email": "couchpotato@gmail.com",
+        "Phone": "5555555555"
+    },
+    "About": {
+        "Aboutme": "I like watching tv, watching movies and not much else."
+    },
+    "Education": {
+        "College": "The streets",
+        "Degree": "Bumology"
+    },
+    "Project": {
+        "Name": "Game of Thrones Binge",
+        "Tech": "Couch, TV, My brother's HBO subscription",
+        "Desc": "I binged all of Game of Thrones only taking breaks to use the bathroom and microwave chicken nuggets."
+    },
+    "Status": "UNCHECKED"
+}
