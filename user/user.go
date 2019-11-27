@@ -14,7 +14,17 @@ import (
 var hand string
 var path = "user/templates/"
 
+// The following global variables are used to define the path to the AWS file storage location
 var username string
+var awsPath = ":Portfolios/Tony_Moon"
+var keyPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem"
+var jsonPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json"
+var ec2User = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
+
+//	remote8 := exec.Command("scp", "-i", keyPath, jsonPath, ec2User+awsPath)
+// scp -i ~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem ~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
+
+//~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
 
 // The following global variables are used to format protfolios
 
@@ -220,4 +230,6 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	temp.Execute(w, nil)
+
+	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/Tony_Moon")).Run()
 }
