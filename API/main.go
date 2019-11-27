@@ -65,7 +65,7 @@ const localuser = "AwYiss" //USER'S LOGIN NAME. HARDCODED FOR NOW
 /////////////////////////////////////IMPORTANT/////////////////////////////////////////////////
 
 func main() {
-	//http.Handle("/", http.FileServer(http.Dir("."))) Nathan's code. Dont know if its important
+	//http.Handle("/static", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
 	http.HandleFunc("/", index)
 

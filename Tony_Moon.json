@@ -1,7 +1,7 @@
 {
     "Information": {
-        "Name": "Tony",
-        "Title": "Couch",
+        "Name": "Tony Moon",
+        "Title": "Couch Potato",
         "Email": "couchpotato@gmail.com",
         "Phone": "5555555555"
     },
@@ -9,7 +9,7 @@
         "Aboutme": "I am a bum who likes watching TV."
     },
     "Education": {
-        "College": "The",
+        "College": "The Streets",
         "Degree": "Bumology"
     },
     "Project": {
