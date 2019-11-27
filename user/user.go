@@ -24,7 +24,7 @@ type Portfolio struct {
 	About       About
 	Education   Education
 	Project     Project
-	Status      string
+	PortStatus  PortStatus
 }
 
 // Information stores all of the relevant info on the person creating the portfolio.
@@ -53,6 +53,12 @@ type Project struct {
 	Desc string `json:"Desc"`
 }
 
+// PortStatus store information on the user's portfolio rating. This should only be viewed by the user.
+type PortStatus struct {
+	Status  string `json:"Status"`
+	Comment string `json:"Comment"`
+}
+
 // These global variables for each struct for use in different packages.
 
 // Portfolio holds the Portfolio struct.
@@ -61,6 +67,7 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
+var rating = PortStatus{}
 var jsonFile string
 
 // Dash is the handler for the user dashboard
@@ -125,11 +132,14 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
+	rating.Status = "UNCHECKED"
+	rating.Comment = "UNCHECKED"
+
 	portfolio.Information = info
 	portfolio.About = about
 	portfolio.Education = education
 	portfolio.Project = project
-	portfolio.Status = "UNCHECKED"
+	portfolio.PortStatus = rating
 
 	b, err := json.MarshalIndent(portfolio, "", "    ")
 	if err != nil {

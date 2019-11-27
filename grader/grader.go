@@ -171,6 +171,12 @@ type Project struct {
 	Desc string `json:"Desc"`
 }
 
+// Rating store information on the user's portfolio rating. This should only be viewed by the user.
+type Rating struct {
+	Status  string `json:"Status"`
+	Comment string `json:"Comment"`
+}
+
 // These global variables for each struct for use in different packages.
 
 // Portfolio holds the Portfolio struct.
@@ -179,4 +185,5 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
+var rating = Rating{}
 var jsonFile string
