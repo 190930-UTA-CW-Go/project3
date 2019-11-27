@@ -1,7 +1,7 @@
 {
     "Information": {
-        "Name": "Tony",
-        "Title": "Couch",
+        "Name": "Tony Moon",
+        "Title": "Couch Potato",
         "Email": "couchpotato@gmail.com",
         "Phone": "5555555555"
     },
@@ -17,5 +17,8 @@
         "Tech": "Couch,",
         "Desc": "I watched all of Game of Thrones only taking breaks to use the bathroom and microwave chicken nuggets."
     },
-    "Status": "pass"
+    "PortStatus": {
+        "Status": "UNCHECKED",
+        "Comment": "UNCHECKED"
+    }
 }

@@ -114,6 +114,8 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
+	portStatus = r.FormValue("status")
+
 	portfolio.Information = info
 	portfolio.About = about
 	portfolio.Education = education
@@ -171,8 +173,8 @@ type Project struct {
 	Desc string `json:"Desc"`
 }
 
-// Rating store information on the user's portfolio rating. This should only be viewed by the user.
-type Rating struct {
+// PortStatus stores information about user's portfolio rating.
+type PortStatus struct {
 	Status  string `json:"Status"`
 	Comment string `json:"Comment"`
 }
@@ -185,5 +187,5 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
-var rating = Rating{}
+var portStatus = PortStatus{}
 var jsonFile string
