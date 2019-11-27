@@ -34,6 +34,7 @@ func main() {
 	http.HandleFunc("/grader/select", grader.Selector)
 	http.HandleFunc("/grader/rate", grader.Rate)
 	http.HandleFunc("/grader/submit", grader.Submit)
+	http.HandleFunc("/grader/view", grader.View)
 
 	// The following handlers are located inside the new package.
 	http.HandleFunc("/new", new.User)

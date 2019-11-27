@@ -65,7 +65,7 @@ const localuser = "AwYiss" //USER'S LOGIN NAME. HARDCODED FOR NOW
 /////////////////////////////////////IMPORTANT/////////////////////////////////////////////////
 
 func main() {
-	//http.Handle("/", http.FileServer(http.Dir("."))) Nathan's code. Dont know if its important
+	//http.Handle("/static", http.FileServer(http.Dir(".")))
 	http.HandleFunc("/portfolioform", portfolioform)
 	http.HandleFunc("/", index)
 
@@ -110,6 +110,9 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	//If the file existed before, without this code, information would be appended to old file.
 	remote3 := exec.Command("rm", filename)
 	remote3.Run()
+
+	remote5 := exec.Command("mv", filename, "./portfolios")
+	remote5.Run()
 
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)

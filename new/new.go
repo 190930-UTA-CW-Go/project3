@@ -21,6 +21,16 @@ func User(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	temp.Execute(w, nil)
+}
+
+// Dash is the handler for navigating new users back to the user login
+func Dash(w http.ResponseWriter, r *http.Request) {
+	hand = path + "dash.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//should not trigger until user enters information currently triggers immediately
 	//using html it can be forced to wait however it will not leave the page
@@ -61,14 +71,4 @@ func CreateFile(username string) {
 	fmt.Println("Creating file in AWS for", username)
 	exec.Command("ssh -i rego.pem ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com", "mkdir", username)
 	fmt.Println("File Created")
-}
-
-// Dash is the handler for navigating new users back to the user login
-func Dash(w http.ResponseWriter, r *http.Request) {
-	hand = path + "dash.html"
-	temp, err := template.ParseFiles(hand)
-	if err != nil {
-		log.Fatal(err)
-	}
-	temp.Execute(w, nil)
 }
