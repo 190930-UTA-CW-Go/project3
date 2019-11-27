@@ -2,7 +2,7 @@
 
 <head>
     <title>
-        Portfolio Form
+        Edit Portfolio
     </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width-device-width, initial-scale=1">
@@ -30,49 +30,48 @@
             <h2>Information</h2>
             <div>
                 <label for="fullname">Full name</label>
-                <input type="text" id="fullname" name="fullname" placeholder="Full name" required>
-            </div>
+                <input type="text" id="fullname" name="fullname" placeholder="Full name" value={{.Information.Name}} required>
             <div>
                 <label for="jobtitle">Job title</label>
-                <input type="text" id="jobtitle" name="jobtitle" placeholder="Job title" required>
+                <input type="text" id="jobtitle" name="jobtitle" placeholder="Job title" value={{.Information.Title}} required>
             </div>
             <div>
                 <label for="email">E-mail address</label>
-                <input type="text" id="email" name="email" placeholder="E-mail address" required>
+                <input type="text" id="email" name="email" placeholder="E-mail address" value={{.Information.Email}} required>
             </div>
             <div>
                 <label for="phone">Phone number</label>
-                <input type="text" id="phone" name="phone" placeholder="Phone number" required>
+                <input type="text" id="phone" name="phone" placeholder="Phone number" value={{.Information.Phone}} required>
             </div>
 
             <h2>About me</h2>
             <div>
                 <label for="aboutme">About me</label><br>
-                <textarea class="bigbox" type="text" id="aboutme" name="aboutme" placeholder="About me" required></textarea>
+                <textarea class="bigbox" type="text" id="aboutme" name="aboutme" placeholder="About me" required>{{.About.Aboutme}}</textarea>
             </div>
 
             <h2>Education</h2>
             <div>
                 <label for="college">College</label>
-                <input type="text" id="college" name="college" placeholder="College">
+                <input type="text" id="college" name="college" placeholder="College" value={{.Education.College}}>
             </div>
             <div>
                 <label for="degree">Degree</label>
-                <input type="text" id="degree" name="degree" placeholder="Degree">
+                <input type="text" id="degree" name="degree" placeholder="Degree" value={{.Education.Degree}}>
             </div>
 
             <h2>Projects</h2>
             <div>
                 <label for="projectname">Project name</label>
-                <input type="text" id="projectname" name="projectname" placeholder="Project name">
+                <input type="text" id="projectname" name="projectname" placeholder="Project name" value={{.Project.Name}}>
             </div>
             <div>
                 <label for="techused">Technologies used</label>
-                <input type="text" id="techused" name="techused" placeholder="Technologies used">
+                <input type="text" id="techused" name="techused" placeholder="Technologies used" value={{.Project.Tech}}>
             </div>
             <div>
                 <label for="projectdesc">Project description</label><br>
-                <textarea class="bigbox" type="text" id="projectdesc" name="projectdesc" placeholder="Project description"></textarea>
+                <textarea class="bigbox" type="text" id="projectdesc" name="projectdesc" placeholder="Project description">{{.Project.Desc}}</textarea>
             </div>
 
             <br>
@@ -81,3 +80,4 @@
         </form>
     </div>
 </body>
+</html>

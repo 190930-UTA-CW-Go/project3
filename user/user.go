@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -109,10 +108,6 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 
 	// Grabs the info out of the .json file.
 	json.Unmarshal(jsonvalue, &portfolio)
-
-	// Prints the values of variables in the console to make sure the .json file was read properly.
-	fmt.Println(portfolio)
-	fmt.Println(portfolio.About.Aboutme)
 	temp.Execute(w, portfolio)
 }
 
