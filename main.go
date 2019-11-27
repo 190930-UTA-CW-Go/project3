@@ -31,6 +31,9 @@ func main() {
 
 	// The following handlers are located inside the grader package.
 	http.HandleFunc("/grader/dash", grader.Dash)
+	http.HandleFunc("/grader/select", grader.Selector)
+	http.HandleFunc("/grader/rate", grader.Rate)
+	http.HandleFunc("/grader/submit", grader.Submit)
 
 	// The following handlers are located inside the new package.
 	http.HandleFunc("/new", new.User)
