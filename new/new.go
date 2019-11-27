@@ -8,6 +8,11 @@ import (
 	"os/exec"
 )
 
+const amazon = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
+
+//This is the amazon aws hostname@IP address.
+const key = "rego.pem"
+
 // Set these global variable to save time in each handler
 var hand string
 var path = "new/templates/"
@@ -48,7 +53,7 @@ func CheckForFile(username string) bool {
 	var doesExist bool
 	fmt.Println("Checking for file named", username)
 	//currently not properly connecting to database
-	exec.Command("ssh -i rego.pem ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com", "if [ -f ", username, " ] then doesExist=true else doesExist=false fi").Output()
+	//doesExist, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " if [ -d /Portfolios" + username + " ] then doesExist=true else doesExist=false fi")).Output() //not currently working
 	fmt.Println(doesExist) //testing
 	return doesExist
 }
@@ -56,6 +61,6 @@ func CheckForFile(username string) bool {
 // CreateFile creates a file in AWS
 func CreateFile(username string) {
 	fmt.Println("Creating file in AWS for", username)
-	exec.Command("ssh -i rego.pem ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com", "mkdir", username)
+	exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " mkdir Portfolios/" + username)).Run()
 	fmt.Println("File Created")
 }
