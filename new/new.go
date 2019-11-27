@@ -8,11 +8,6 @@ import (
 	"os/exec"
 )
 
-const amazon = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
-
-//This is the amazon aws hostname@IP address.
-const key = "rego.pem"
-
 // Set these global variable to save time in each handler
 var hand string
 var path = "new/templates/"
@@ -63,15 +58,7 @@ func CheckForFile(username string) bool {
 
 // CreateFile creates a file in AWS
 func CreateFile(username string) {
-<<<<<<< HEAD
 	fmt.Println("Creating file in AWS for", username)
 	exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " mkdir Portfolios/" + username)).Run()
 	fmt.Println("File Created")
-=======
-	fmt.Println("Creating user directory in AWS for ", username)
-
-	//make user portfolio on amazon. If it already exists, nothing happens
-	remote4 := exec.Command("ssh", "-i", key, amazon, "mkdir", "-p", "Portfolios/"+username)
-	remote4.Run()
->>>>>>> 6febb0cd9d32696cf1b5da13b86944eeb484bcb7
 }
