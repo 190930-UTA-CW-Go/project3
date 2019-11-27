@@ -4,9 +4,10 @@
         <title>Select</title>
     </head>
     <body>
-        <p>Selecting a portfolio to grade is currently under construction.</p>
-        <form method="POST" action="/grader/rate">
-            <button type="submit">View the test portfolio</button>
+        <form method="POST" action="/grader/view">
+            Please specify a user to grade. <br>
+            <input type="text" name="username" id="username">
+            <input type="submit" value="Submit">
         </form>
         <form method="POST" action="/grader/dash">
             <button type="submit">Take me back</button>
