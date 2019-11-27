@@ -186,7 +186,6 @@ func Status(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	temp.Execute(w, nil)
 
 	// Opens the .json file.
 	readjson, readerr := os.Open(jsonFile)
@@ -194,4 +193,11 @@ func Status(w http.ResponseWriter, r *http.Request) {
 		panic(readerr)
 	}
 	defer readjson.Close()
+
+	// Reads the .json file.
+	jsonvalue, _ := ioutil.ReadAll(readjson)
+
+	// Grabs the info out of the .json file.
+	json.Unmarshal(jsonvalue, &portfolio)
+	temp.Execute(w, portfolio)
 }

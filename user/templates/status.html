@@ -23,13 +23,14 @@
     }
 </style>
     <body>
-        <form action="/user/submit" method="POST">
+        <form>
             <h2>Status of Current Portfolio</h2>
             <div>
                 <label for="status">Status</label>
                 <input type="text" id="status" name="status" placeholder="UNCHECKED" value={{.Status}} disabled>
             </div>
         </form>
+    </br>
         <form method="POST" action="/user/dash">
             <button type="submit">Dashboard</button>
         </form>
