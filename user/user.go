@@ -211,3 +211,13 @@ func Status(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(jsonvalue, &portfolio)
 	temp.Execute(w, portfolio)
 }
+
+// Upload is the handler for uploading your portfolio
+func Upload(w http.ResponseWriter, r *http.Request) {
+	hand = path + "upload.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+}
