@@ -35,7 +35,7 @@ func Selector(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, nil)
 }
 
-// View is the handler for selecting rating a portfolio
+// View is the handler for loading the selected portfolio
 func View(w http.ResponseWriter, r *http.Request) {
 	hand = path + "view.html"
 	temp, err := template.ParseFiles(hand)
@@ -46,7 +46,7 @@ func View(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, username)
 }
 
-// Rate is the handler for selecting rating a portfolio
+// Rate is the handler for viewing and rating the portfolio
 func Rate(w http.ResponseWriter, r *http.Request) {
 	// Sets the value of the jsonfile variable.
 	jsonFile = "Tony_Moon.json"
@@ -71,7 +71,7 @@ func Rate(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, portfolio)
 }
 
-// Submit is the handler for selecting rating a portfolio
+// Submit is the handler for submitting the portfolio with the new rating
 func Submit(w http.ResponseWriter, r *http.Request) {
 	hand = path + "submit.html"
 	temp, err := template.ParseFiles(hand)
@@ -91,6 +91,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	}
 	defer f.Close()
 
+	// The following assigns the form values to the structs going into the json file
 	info.Title = r.FormValue("jobtitle")
 	info.Email = r.FormValue("email")
 	info.Phone = r.FormValue("phone")
@@ -110,6 +111,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	portfolio.Project = project
 	portfolio.Status = r.FormValue("rating")
 
+	// The following packages the structs into the json file.
 	b, err := json.MarshalIndent(portfolio, "", "    ")
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -117,6 +119,8 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	}
 	f.Write(b)
 	f.Close()
+
+	// Serve and execute
 	http.ServeFile(w, r, hand)
 	temp.Execute(w, portfolio)
 }
