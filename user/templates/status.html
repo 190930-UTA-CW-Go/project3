@@ -27,8 +27,13 @@
             <h2>Status of Current Portfolio</h2>
             <div>
                 <label for="status">Status</label>
-                <input type="text" id="status" name="status" placeholder="UNCHECKED" value={{.Status}} disabled>
+                <textarea rows="1" cols="50" type="text" id="status" name="status" placeholder="Portfolio Staus" disabled>{{.PortStatus.Status}}</textarea>
             </div>
+            <div>
+                <label for="comments">Comments</label>
+                <textarea rows="1" cols="50" type="text" id="comments" name="comments" placeholder="Portfolio Comments" disabled>{{.PortStatus.Comments}}</textarea>
+            </div>
+            <div>
         </form>
     <br>
         <form method="POST" action="/user/dash">

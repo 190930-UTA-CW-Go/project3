@@ -114,7 +114,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
-	portStatus = r.FormValue("status")
+	//portStatus = r.FormValue("status")
 
 	portfolio.Information = info
 	portfolio.About = about
