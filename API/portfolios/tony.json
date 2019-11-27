@@ -16,5 +16,6 @@
         "Name": "Spring Cleaning",
         "Tech": "Mop",
         "Desc": "i cleaned the apartment"
-    }
+    },
+    "Status": "UNCHECKED"
 }

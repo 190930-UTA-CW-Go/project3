@@ -23,3 +23,31 @@
     - Prompt will display name of user's profile as well as status(UNCHECKED, DENIED, or APPROVED)
     - Prompt will ask for action (Change status to APPROVED or DENIED. Or exit without any changes)
     - Program terminates. 
+
+### 11/26
+- User can now edit profiles. 
+- Implemented HTML navigation functionality. 
+- Implemented ability to automatically scp "push" the user portfolio to the amazon server. 
+    - **THE "USER" IS HARDCODED RIGHT NOW as "localuser".**
+        - Also makes sure the folder for "localuser" exists on the amazon server.
+        - If it already exists, nothing happens.
+    - In moving files: 
+        - When "fileA" exists on amazon server, and a NEW "fileA" is pushed onto the amazon server,
+            **The old "fileA" will cease to exist.**
+        - A function to 'pull' the file from amazon for the user to read has not been implemented
+            - May be an issue if an admin edits the file(such as updating its STATUS field). This 
+                file on the amazon server will never be seen by the user, and will only be overwritten. ("I have no access or business with the amazon server code" - Garner)
+    - **YOU MUST HAVE THE "rego.pem" KEY AND ALL JSON FILES IN THE SAME FOLDER AS main.go**
+
+
+
+
+
+
+
+
+
+
+## (Misc Code)
+- ssh -i rego.pem ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com
+- Public IP: 18.188.174.65
