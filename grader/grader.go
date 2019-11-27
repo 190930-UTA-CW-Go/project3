@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"text/template"
 )
 
@@ -49,7 +50,7 @@ func View(w http.ResponseWriter, r *http.Request) {
 // Rate is the handler for viewing and rating the portfolio
 func Rate(w http.ResponseWriter, r *http.Request) {
 	// Sets the value of the jsonfile variable.
-	jsonFile = "Tony_Moon.json"
+	jsonFile = username + ".json"
 
 	hand = path + "rate.html"
 	temp, err := template.ParseFiles(hand)
@@ -82,6 +83,14 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	//Take inputted fullname from profile and use it to name the json file.
 	info.Name = r.FormValue("fullname") //Part of information structure of profile.
 	filename := username + ".json"
+
+	//Removes file if it previously existed, to "overwrite" instead of append.
+	//If the file existed before, without this code, information would be appended to old file.
+	remote3 := exec.Command("rm", filename)
+	remote3.Run()
+
+	remote5 := exec.Command("mv", filename, "./portfolios")
+	remote5.Run()
 
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)

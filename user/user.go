@@ -6,13 +6,15 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
+	"os/exec"
 	"text/template"
 )
 
 // Set these global variable to save time in each handler
 var hand string
 var path = "user/templates/"
+
+var username string
 
 // Dash is the handler for the user dashboard
 func Dash(w http.ResponseWriter, r *http.Request) {
@@ -21,7 +23,8 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	temp.Execute(w, nil)
+	username = r.FormValue("username")
+	temp.Execute(w, username)
 }
 
 // MakeNew is the handler for creating a new portfolio
@@ -44,9 +47,15 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 
 	//Take inputted fullname from profile and use it to name the json file.
 	info.Name = r.FormValue("fullname") //Part of information structure of profile.
-	filename := info.Name
-	filename = strings.Replace(filename, " ", "_", -1) //Changes white space to underscores
-	filename = filename + ".json"
+	filename := username + ".json"
+
+	//Removes file if it previously existed, to "overwrite" instead of append.
+	//If the file existed before, without this code, information would be appended to old file.
+	remote3 := exec.Command("rm", filename)
+	remote3.Run()
+
+	remote5 := exec.Command("mv", username, "./portfolios")
+	remote5.Run()
 
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)

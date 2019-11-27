@@ -111,6 +111,9 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	remote3 := exec.Command("rm", filename)
 	remote3.Run()
 
+	remote5 := exec.Command("mv", filename, "./portfolios")
+	remote5.Run()
+
 	//Creates and opens a new json file in the user's inputted fullname.
 	f, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
