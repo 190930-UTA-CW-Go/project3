@@ -3,6 +3,7 @@ package user
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -83,29 +84,41 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	f.Write(b)
 	f.Close()
 	http.ServeFile(w, r, hand)
+	temp.Execute(w, portfolio)
+}
 
-	//These show in the console that the program has received the information entered in the form.
-	fmt.Println(portfolio.Information)
-	fmt.Println(portfolio.About)
-	fmt.Println(portfolio.Education)
-	fmt.Println(portfolio.Project)
+// Edit is the handler for editing an exitsting portfolio
+func Edit(w http.ResponseWriter, r *http.Request) {
+	// Sets the value of the jsonfile variable.
+	jsonFile = "Tony_Moon.json"
+
+	hand = path + "edit.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Opens the .json file.
+	readjson, readerr := os.Open(jsonFile)
+	if readerr != nil {
+		panic(readerr)
+	}
+	defer readjson.Close()
+
+	// Reads the .json file.
+	jsonvalue, _ := ioutil.ReadAll(readjson)
+
+	// Grabs the info out of the .json file.
+	json.Unmarshal(jsonvalue, &portfolio)
+
+	// Prints the values of variables in the console to make sure the .json file was read properly.
 	fmt.Println(portfolio)
+	fmt.Println(portfolio.About.Aboutme)
 	temp.Execute(w, portfolio)
 }
 
 // Status is the handler for checking the status of your portfolio
 func Status(w http.ResponseWriter, r *http.Request) {
 	hand = path + "status.html"
-	temp, err := template.ParseFiles(hand)
-	if err != nil {
-		log.Fatal(err)
-	}
-	temp.Execute(w, nil)
-}
-
-// Edit is the handler for editing an exitsting portfolio
-func Edit(w http.ResponseWriter, r *http.Request) {
-	hand = path + "edit.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)

@@ -166,6 +166,10 @@ func formsubmitted(response http.ResponseWriter, request *http.Request) {
 	remote2.Run()
 }
 
+/*editportfolio function takes info from an existing .json file and displays it in the form
+at localhost:8080/editportfolio. This edits the LOCAL copy of the portfolio. Then upon
+hitting the submit button again, BOTH local copy here and the remote copy on amazon
+are overwritten with the new information.*/
 func editportfolio(response http.ResponseWriter, request *http.Request) {
 	//Sets the value of the jsonfile variable.
 	jsonfile = "potfolios/tony.json"

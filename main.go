@@ -26,6 +26,7 @@ func main() {
 	http.HandleFunc("/user/new", user.MakeNew)
 	http.HandleFunc("/user/edit", user.Edit)
 	http.HandleFunc("/user/submit", user.Submit)
+	http.HandleFunc("/user/status", user.Status)
 
 	// The following handlers are located inside the grader package.
 	http.HandleFunc("/grader/dash", grader.Dash)
