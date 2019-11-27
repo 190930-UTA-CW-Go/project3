@@ -31,10 +31,6 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//should not trigger until user enters information currently triggers immediately
-	//using html it can be forced to wait however it will not leave the page
-	//fixed by adding a new button and gained the ability to skip dash
 	username = r.FormValue("username")
 	if username != "" {
 		present := CheckForFile(username)
@@ -53,15 +49,6 @@ func CheckForFile(username string) bool {
 	fmt.Println("Checking for file named", username)
 	//currently not properly connecting to database
 	exec.Command("ssh -i rego.pem ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com", "if [ -f ", username, " ] then doesExist=true else doesExist=false fi").Output()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// doesExist = false // True if file does not exits
-	// if doesExist == false {
-	// 	CreateFile(username)
-	// } else {
-	// 	fmt.Println("File already exists")
-	// }
 	fmt.Println(doesExist) //testing
 	return doesExist
 }
