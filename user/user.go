@@ -14,7 +14,17 @@ import (
 var hand string
 var path = "user/templates/"
 
+// The following global variables are used to define the path to the AWS file storage location
 var username string
+var awsPath = ":Portfolios/Tony_Moon"
+var keyPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem"
+var jsonPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json"
+var ec2User = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
+
+//	remote8 := exec.Command("scp", "-i", keyPath, jsonPath, ec2User+awsPath)
+// scp -i ~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem ~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
+
+//~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
 
 // The following global variables are used to format protfolios
 
@@ -24,7 +34,7 @@ type Portfolio struct {
 	About       About
 	Education   Education
 	Project     Project
-	Status      string
+	PortStatus  PortStatus
 }
 
 // Information stores all of the relevant info on the person creating the portfolio.
@@ -53,8 +63,8 @@ type Project struct {
 	Desc string `json:"Desc"`
 }
 
-//Rating stores information about user's portfolio rating.
-type Rating struct {
+// PortStatus store information on the user's portfolio rating. This should only be viewed by the user.
+type PortStatus struct {
 	Status  string `json:"Status"`
 	Comment string `json:"Comment"`
 }
@@ -67,6 +77,7 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
+var rating = PortStatus{}
 var jsonFile string
 
 // Dash is the handler for the user dashboard
@@ -131,11 +142,14 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
+	rating.Status = "UNCHECKED"
+	rating.Comment = "UNCHECKED"
+
 	portfolio.Information = info
 	portfolio.About = about
 	portfolio.Education = education
 	portfolio.Project = project
-	portfolio.Status = "UNCHECKED"
+	portfolio.PortStatus = rating
 
 	b, err := json.MarshalIndent(portfolio, "", "    ")
 	if err != nil {
@@ -206,4 +220,16 @@ func Status(w http.ResponseWriter, r *http.Request) {
 	// Grabs the info out of the .json file.
 	json.Unmarshal(jsonvalue, &portfolio)
 	temp.Execute(w, portfolio)
+}
+
+// Upload is the handler for uploading your portfolio
+func Upload(w http.ResponseWriter, r *http.Request) {
+	hand = path + "upload.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal(err)
+	}
+	temp.Execute(w, nil)
+
+	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/Tony_Moon")).Run()
 }
