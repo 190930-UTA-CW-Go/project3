@@ -34,31 +34,31 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	username = r.FormValue("username")
-	fmt.Println(username)
-
-	present := CheckForFile(username)
-	if present != true {
-		CreateFile(username)
+	if username != "" {
+		present := CheckForFile(username)
+		if present != true {
+			CreateFile(username)
+		} else {
+			fmt.Println("User already exists please try again") //does nothing other than say this in cli
+		}
 	}
-
-	temp.Execute(w, username)
+	temp.Execute(w, nil)
 }
 
 // CheckForFile checks for a file with the name of the username in the AWS
 func CheckForFile(username string) bool {
 	var doesExist bool
 	fmt.Println("Checking for file named", username)
-	doesExist = false // True if file does not exits
+	//currently not properly connecting to database
+	//doesExist, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " if [ -d /Portfolios" + username + " ] then doesExist=true else doesExist=false fi")).Output() //not currently working
+	fmt.Println(doesExist) //testing
 	return doesExist
 }
 
 // CreateFile creates a file in AWS
 func CreateFile(username string) {
-	fmt.Println("Creating user directory in AWS for ", username)
-
-	//make user portfolio on amazon. If it already exists, nothing happens
-	remote4 := exec.Command("ssh", "-i", key, amazon, "mkdir", "-p", "Portfolios/"+username)
-	remote4.Run()
+	fmt.Println("Creating file in AWS for", username)
+	exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " mkdir Portfolios/" + username)).Run()
+	fmt.Println("File Created")
 }
