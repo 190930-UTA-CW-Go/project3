@@ -231,5 +231,6 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 	temp.Execute(w, nil)
 
+	// The following builds a bash command and executes it
 	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/Tony_Moon")).Run()
 }
