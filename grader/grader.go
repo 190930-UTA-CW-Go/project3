@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"text/template"
+
+	"github.com/190930-UTA-CW-Go/project3/grader/downloadfile"
 )
 
 // Set these global variable to save time in each handler
@@ -43,7 +45,10 @@ func View(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	username = r.FormValue("username")
+	downloadfile.DownloadAWS(username)
+
 	temp.Execute(w, username)
 }
 
