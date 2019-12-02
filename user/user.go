@@ -21,13 +21,6 @@ var keyPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem"
 var jsonPath string
 var ec2User = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
 
-//	remote8 := exec.Command("scp", "-i", keyPath, jsonPath, ec2User+awsPath)
-// scp -i ~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem ~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
-
-//~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/
-
-// The following global variables are used to format protfolios
-
 // Portfolio stores all of the information pulled from the portfolio form. This is stored as global variable.
 type Portfolio struct {
 	Information Information
@@ -170,12 +163,12 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 	hand = path + "edit.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 	// Opens the .json file.
 	readjson, readerr := os.Open(jsonFile)
 	if readerr != nil {
-		panic(readerr)
+		log.Fatal("Error opening json files:", readerr)
 	}
 	defer readjson.Close()
 
