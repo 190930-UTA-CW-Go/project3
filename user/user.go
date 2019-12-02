@@ -190,11 +190,24 @@ func Edit(w http.ResponseWriter, r *http.Request) {
 // Printer is the handler for printing your portfolio
 func Printer(w http.ResponseWriter, r *http.Request) {
 	hand = path + "print.html"
+	jsonFile = username + ".json"
+
+	// Read the json file
+	portFile, err := os.Open(jsonFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer portFile.Close()
+	byteValue, _ := ioutil.ReadAll(portFile)
+
+	// Unmarshal the json file and save the values to the the portfolio structure
+	json.Unmarshal(byteValue, &portfolio)
+
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)
 	}
-	temp.Execute(w, nil)
+	temp.Execute(w, portfolio)
 }
 
 // Status is the handler for checking the status of your portfolio
