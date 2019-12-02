@@ -46,7 +46,7 @@ steps:
     containerRegistry: 'revgoproject3'
     repository: 'revgoproject3/client'
     command: 'buildAndPush'
-    Dockerfile: '**/Client/Dockerfile'
+    Dockerfile: '**/Dockerfile'
     tags: 'latest'
 
 - script: |
@@ -70,5 +70,18 @@ steps:
     containerRegistry: 'revgoproject3'
     repository: 'revgoproject3/slackbot'
     command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    Dockerfile: '**/slackbot/Dockerfile'
     tags: 'latest'
+
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)/deployment.yaml'
+    artifact: 'manifest'
+    publishLocation: 'pipeline'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(GOPATH)/src/github.com/$(build.repository.name)/deployment.yaml'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
