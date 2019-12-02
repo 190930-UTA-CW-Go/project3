@@ -1,4 +1,4 @@
-RevatureGo
+RevatureGo Go PowerRangers
 ========
 
 RevatureGo will replace the portfolio system on RevaturePro by making a better interface and automating processes.
