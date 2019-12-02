@@ -42,18 +42,18 @@
             <h2>Information</h2>
             <div>
                 <label for="fullname">Full name</label>
-                <input type="text" id="fullname" name="fullname" placeholder="Full name" value={{.Information.Name}} required>
+                <textarea rows="1" cols="50" type="text" id="fullname" name="fullname" placeholder="Full name" required>{{.Information.Name}}</textarea>
             <div>
                 <label for="jobtitle">Job title</label>
-                <input type="text" id="jobtitle" name="jobtitle" placeholder="Job title" value={{.Information.Title}} required>
+                <textarea rows="1" cols="50" type="text" id="jobtitle" name="jobtitle" placeholder="Job title" required>{{.Information.Title}}</textarea>
             </div>
             <div>
                 <label for="email">E-mail address</label>
-                <input type="text" id="email" name="email" placeholder="E-mail address" value={{.Information.Email}} required>
+                <textarea rows="1" cols="50" type="text" id="email" name="email" placeholder="E-mail address" required>{{.Information.Email}}</textarea>
             </div>
             <div>
                 <label for="phone">Phone number</label>
-                <input type="text" id="phone" name="phone" placeholder="Phone number" value={{.Information.Phone}} required>
+                <textarea rows="1" cols="50" type="text" id="phone" name="phone" placeholder="Phone number" required>{{.Information.Phone}}</textarea>
             </div>
 
             <h2>About me</h2>
@@ -65,21 +65,21 @@
             <h2>Education</h2>
             <div>
                 <label for="college">College</label>
-                <input type="text" id="college" name="college" placeholder="College" value={{.Education.College}}>
+                <textarea rows="1" cols="50" type="text" id="college" name="college" placeholder="College">{{.Education.College}}</textarea>
             </div>
             <div>
                 <label for="degree">Degree</label>
-                <input type="text" id="degree" name="degree" placeholder="Degree" value={{.Education.Degree}}>
+                <textarea rows="1" cols="50" type="text" id="degree" name="degree" placeholder="Degree">{{.Education.Degree}}</textarea>
             </div>
 
             <h2>Projects</h2>
             <div>
                 <label for="projectname">Project name</label>
-                <input type="text" id="projectname" name="projectname" placeholder="Project name" value={{.Project.Name}}>
+                <textarea rows="1" cols="50" type="text" id="projectname" name="projectname" placeholder="Project name">{{.Project.Name}}</textarea>
             </div>
             <div>
                 <label for="techused">Technologies used</label>
-                <input type="text" id="techused" name="techused" placeholder="Technologies used" value={{.Project.Tech}}>
+                <textarea rows="1" cols="50" type="text" id="techused" name="techused" placeholder="Technologies used">{{.Project.Tech}}</textarea>
             </div>
             <div>
                 <label for="projectdesc">Project description</label><br>
