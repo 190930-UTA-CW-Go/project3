@@ -23,6 +23,7 @@ func main() {
 
 	// The following handlers are located inside the user package.
 	http.HandleFunc("/user/dash", user.Dash)
+	http.HandleFunc("/user/idash", user.InitDash)
 	http.HandleFunc("/user/new", user.MakeNew)
 	http.HandleFunc("/user/edit", user.Edit)
 	http.HandleFunc("/user/submit", user.Submit)

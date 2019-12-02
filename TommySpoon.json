@@ -1,7 +1,7 @@
 {
     "Information": {
-        "Name": "Tommy Growspoon",
-        "Title": "Producer, Writer, Actor, Photographer",
+        "Name": "Tommy",
+        "Title": "Producer,",
         "Email": "tommyspoon@yahoo.com",
         "Phone": "205-867-5309"
     },
@@ -10,11 +10,11 @@
     },
     "Education": {
         "College": "Sawhney",
-        "Degree": "Preforming Arts"
+        "Degree": "Preforming"
     },
     "Project": {
-        "Name": "Illeagally Burnette",
-        "Tech": "Mignova Camcorder, iMovie, Garageband",
+        "Name": "Illeagally",
+        "Tech": "Mignova",
         "Desc": "In this elegant indie film, produced, written and filmed by me. I star as Bennet Richardson, a brilliant young man going into law school. Things spice up, when is crazy ex-girlfriend decides to follow him."
     },
     "PortStatus": {

@@ -80,6 +80,16 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal("Error parsing handler files:", err)
 	}
+	temp.Execute(w, nil)
+}
+
+// InitDash is the handler for the user dashboard, this is the first and only dashboard
+func InitDash(w http.ResponseWriter, r *http.Request) {
+	hand = path + "dash.html"
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal("Error parsing handler files:", err)
+	}
 	username = r.FormValue("username")
 	temp.Execute(w, username)
 }
