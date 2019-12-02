@@ -16,7 +16,12 @@ import (
 var hand string
 var path = "grader/templates/"
 
+// The following global variables are used to define the path to the AWS file storage location
 var username string
+var awsPath string
+var keyPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem"
+var jsonPath string
+var ec2User = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
 
 // Dash is the handler for the grader dashboard
 func Dash(w http.ResponseWriter, r *http.Request) {
@@ -140,6 +145,22 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	// Serve and execute
 	http.ServeFile(w, r, hand)
 	temp.Execute(w, portfolio)
+}
+
+// Upload is the handler for uploading your portfolio
+func Upload(w http.ResponseWriter, r *http.Request) {
+	hand = path + "upload.html"
+	awsPath = ":Portfolios/" + username
+	jsonPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/" + username + ".json"
+
+	temp, err := template.ParseFiles(hand)
+	if err != nil {
+		log.Fatal("Error parsing handler files:", err)
+	}
+	temp.Execute(w, nil)
+
+	// The following builds a bash command and executes it
+	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " " + ec2User + awsPath)).Run()
 }
 
 // The following global variables are used to format protfolios
