@@ -14,5 +14,6 @@
 # AWS key
 *.pem
 
-# json Portfolios
+# Portfolios
 *.json
+tommyspoon.mds
