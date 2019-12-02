@@ -11,6 +11,11 @@ func main() {
 	// Set RNG Seed
 	rand.Seed(time.Now().UTC().UnixNano())
 
+	// Open Postgres database
+	//database.StartDB()
+
 	// Start the bot
 	bot.StartBot()
+
+	//database.FindFile("davidychang@outlook.com")
 }

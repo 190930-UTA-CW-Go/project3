@@ -10,6 +10,13 @@ var UserHi = map[string]string{
 	"goodafternoon": "Good Afternoon ",
 }
 
+// BotHi = contains the possible "Hi" related outgoing messages
+var BotHi = []string{
+	"Hi ",
+	"Hello ",
+	"Hola ",
+	"Guten Tag "}
+
 // UserBye = contains the possible "Bye" related incoming messages
 var UserBye = map[string]string{
 	"goodbye":   "rng",
@@ -18,15 +25,35 @@ var UserBye = map[string]string{
 	"goodnight": "Good Night ",
 }
 
-// BotHi = contains the possible "Hi" related outgoing messages
-var BotHi = []string{
-	"Hi ",
-	"Hello ",
-	"Hola ",
-	"Guten Tag "}
-
 // BotBye = contains the possible "Bye" related outgoing messages
 var BotBye = []string{
 	"Goodbye ",
 	"Bye ",
 	"See You Later "}
+
+// Portfolio = contains the possible "Portfolio" related incoming messages
+var Portfolio = map[string]string{
+	"startportfolio":    "rng",
+	"createportfolio":   "rng",
+	"startaportfolio":   "rng",
+	"createaportfolio":  "rng",
+	"startmyportfolio":  "rng",
+	"createmyportfolio": "rng",
+}
+
+// BotPortfolio = contains the possible "Portfolio" related outgoing messages
+var BotPortfolio = []string{
+	"Done, Good Luck!",
+	"I got you :)"}
+
+// Status = contains the possible "Status" related incoming messages
+var Status = map[string]string{
+	"portfoliostatus":     "rng",
+	"statusofmyportfolio": "rng",
+	"howsmyportfolio":     "rng",
+}
+
+// BotStatus = contains the possible "Status" related outgoing messages
+var BotStatus = []string{
+	"Done, Good Luck!",
+	"I got you :)"}
