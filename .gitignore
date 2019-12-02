@@ -11,8 +11,9 @@
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-# AWS Pem Key
+# AWS key
 *.pem
 
-# JSON Files
+# Portfolios
 *.json
+tommyspoon.mds
