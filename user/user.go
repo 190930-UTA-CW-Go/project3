@@ -16,9 +16,9 @@ var path = "user/templates/"
 
 // The following global variables are used to define the path to the AWS file storage location
 var username string
-var awsPath = ":Portfolios/Tony_Moon"
+var awsPath string
 var keyPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/rego.pem"
-var jsonPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/Tony_Moon.json"
+var jsonPath string
 var ec2User = "ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com"
 
 //	remote8 := exec.Command("scp", "-i", keyPath, jsonPath, ec2User+awsPath)
@@ -165,7 +165,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 // Edit is the handler for editing an exitsting portfolio
 func Edit(w http.ResponseWriter, r *http.Request) {
 	// Sets the value of the jsonfile variable.
-	jsonFile = "Tony_Moon.json"
+	jsonFile = username + ".json"
 
 	hand = path + "edit.html"
 	temp, err := template.ParseFiles(hand)
@@ -238,6 +238,9 @@ func Status(w http.ResponseWriter, r *http.Request) {
 // Upload is the handler for uploading your portfolio
 func Upload(w http.ResponseWriter, r *http.Request) {
 	hand = path + "upload.html"
+	awsPath = ":Portfolios/" + username
+	jsonPath = "~/go/src/github.com/190930-UTA-CW-Go/project3/" + username + ".json"
+
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
 		log.Fatal(err)
@@ -245,5 +248,5 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, nil)
 
 	// The following builds a bash command and executes it
-	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " ec2-user@ec2-18-188-174-65.us-east-2.compute.amazonaws.com:Portfolios/Tony_Moon")).Run()
+	exec.Command("bash", "-c", ("scp -i " + keyPath + " " + jsonPath + " " + ec2User + awsPath)).Run()
 }
