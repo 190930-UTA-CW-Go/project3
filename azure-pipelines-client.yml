@@ -34,7 +34,6 @@ steps:
         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure
     fi
-    cd Client
     go build -o clientbin .
   workingDirectory: '$(modulePath)'
   displayName: 'Get dependencies, then build'
@@ -71,5 +70,5 @@ steps:
     containerRegistry: 'revgoproject3'
     repository: 'revgoproject3/slackbot'
     command: 'buildAndPush'
-    Dockerfile: '**/slackbot/Dockerfile'
+    Dockerfile: '**/Dockerfile'
     tags: 'latest'

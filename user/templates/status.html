@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>
+            Check Status
+        </title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width-device-width, initial-scale=1">
+    </head>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    textarea {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+    }
+    .bigbox {
+        height: 200px;
+        width: 600px;
+    }
+</style>
+    <body>
+        <form>
+            <h2>Status of Current Portfolio</h2>
+            <div>
+                <label for="status">Status</label>
+                <textarea rows="1" cols="50" type="text" id="status" name="status" placeholder="Portfolio Staus" disabled>{{.PortStatus.Status}}</textarea>
+            </div>
+            <div>
+                <label for="comments">Comments</label><br>
+                <textarea class="bigbox" type="text" id="comments" name="comments" placeholder="Portfolio Comments" disabled>{{.PortStatus.Comments}}</textarea>
+            </div>
+            <div>
+        </form>
+        <form method="POST" action="/user/dash">
+            <button type="submit">Dashboard</button>
+        </form>
+    </body>
+</html>
