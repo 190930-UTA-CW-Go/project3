@@ -1,3 +1,16 @@
+RevatureGo-Slackbot
+========
+
+- Starts the bot.
+- Gets user input.
+- Bot uses data.go to give a response based upon user input.
+- Makes folders when asked.
+- Starts application when asked.
+- Checks for folders and files and checks their status.
+- Upload and Download files.
+
+
+
 # Instructions
 ```bash
 1) Add Slack "Bots" app to Slack channel
