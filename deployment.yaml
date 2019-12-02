@@ -1,7 +1,7 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: revgo
+  name: revgoclient
 spec:
   replicas: 1
   template:
@@ -16,7 +16,7 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: revgo
+  name: revgoslackbot
 spec:
   replicas: 1
   template:
