@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+       Choose Portfolio to edit
+    </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width-device-width, initial-scale=1">
+</head>
+
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    input {
+        font-size: 14px;
+    }
+    .bigbox {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        height: 200px;
+        width: 600px;
+    }
+</style>
+
+<body>
+    <div>
+        <h1>Type in name of portfolio to edit</h1>
+        <form action="/editportfolio" method="POST">
+            
+            <div>
+                <label for="filename">Filename(example_1.json)</label>
+                <input type="text" id="filename" name="filename" placeholder="Filename" required>
+            </div>
+            <button type="submit">Edit this portfolio</button>
+        </form>
+    </div>
+</body>
+</html>

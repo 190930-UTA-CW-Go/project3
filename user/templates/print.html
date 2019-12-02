@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+	<head>
+        <title>Print</title>
+    </head>
+    <link rel="stylesheet" media="all" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"> -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <body>
+
+            <div class="d-print-none">
+                    <div class="container">
+                        <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary" onclick="printpage()">Print as PDF</button>
+                                <form method="POST" action="/user/dash">
+                                    <button type="submit" class="btn btn-primary">Take me Back</button>
+                        </form>
+
+                        </div>
+
+                </div>
+            </div>
+
+
+            <!-- <div class="container"> -->
+        <!-- </div> -->
+
+        
+        
+        <br>
+        <br>
+        
+        <script>
+            /*
+            printpage is a js function that hides the printpdf button when it is clicked
+            then prompts the user to download a pdf of the webpage        
+            */
+            function printpage(){
+                window.print();
+            }
+
+        // function hide(){ 
+        //     var div = document.getElementById("printpdf");
+        //     // var backbutton =document.getElementById("backbutton");
+        //     // div.style.display="none";
+        //     // backbutton.style.display="hide";
+        //     window.print();
+        //     // div.style.display="visible";
+        //     // backbutton.style.display="visible";
+        // }
+        </script>
+        
+        
+        <div class="container">
+        <h3 class="text-left">{{.Information.Name}}</h3>
+        <h4 class="text-left text-warning">{{.Information.Title}}</h4>
+        </div>
+        
+        
+        <br>
+        <br>
+        <br>
+        
+        <div class="container" >
+            <h2 class="text-left">About Me</h2>
+            <div class="border-top my-3"></div>
+            <p class="text-justify">{{.About.Aboutme}}</p>
+        </div>
+        
+        <br>
+        <br>
+        
+        
+        <div class="container" >
+                <h2 class="text-left">Education</h2>
+                <div class="border-top my-3"></div>
+                <h3 class="text-justify">{{.Education.Degree}}</h3>
+                <p class="text-justify">{{.Education.College}}</p>
+            </div>
+        
+        <br>
+        <br>
+        
+        <div class="container" >
+                <h2 class="text-left">Projects</h2>
+                <div class="border-top my-3"></div>
+                <h3 class="text-justify">{{.Project.Name}}</h3>
+                <p class="text-justify">{{.Project.Desc}}</p>
+                <br>
+                <h3 class="text-justify">Environment / Technologies</h3>
+                <p class="text-justify">{{.Project.Tech}}</p>
+        
+                </div>
+        
+        
+
+                <div class="d-print-none">
+                    
+                </div>
+
+
+                            <!-- <button type="submit">Take me back</button> -->
+                    <!-- <a class="btn btn-primary" type="submit"  role="button">Take me Back</a> -->
+
+    </body>
+</html>
