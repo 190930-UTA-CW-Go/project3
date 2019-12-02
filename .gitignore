@@ -12,4 +12,7 @@
 *.out
 
 # AWS Pem Key
-rego.pem
+*.pem
+
+# JSON Files
+*.json

@@ -48,19 +48,11 @@ func home(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		//fmt.Println(string(result))
 		slice := database.ParsePayload(string(result))
 		user := database.ParseEmail(database.GetEmail(slice))
 		button := database.GetButton(slice)
-
-		//fmt.Println(database.GetButton(slice))
-		//fmt.Println(database.GetEmail(slice))
-		//fmt.Println(database.ParseEmail(database.GetEmail(slice)))
-		//fmt.Println(database.GetValue(string(result)))
-		//fmt.Println(database.ParseEmail(database.GetValue(string(result))))
 		database.EditFile(user, button)
 		w.Write([]byte(database.GetButton(slice)))
-		//w.Write([]byte("Received a POST request\n"))
 
 	default:
 		w.WriteHeader(http.StatusNotImplemented)
