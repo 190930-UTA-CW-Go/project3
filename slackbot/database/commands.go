@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	_ "github.com/lib/pq" // necessary
 )
@@ -18,7 +19,7 @@ type Portfolio struct {
 	About       About       `json:"About"`
 	Education   Education   `json:"Education"`
 	Project     Project     `json:"Project"`
-	Status      string
+	PortStatus  PortStatus  `json:"PortStatus"`
 }
 
 //Information stores all of the relevant info on the person creating the portfolio.
@@ -45,6 +46,12 @@ type Project struct {
 	Name string `json:"Name"`
 	Tech string `json:"Tech"`
 	Desc string `json:"Desc"`
+}
+
+// PortStatus =
+type PortStatus struct {
+	Status  string `json:"Status"`
+	Comment string `json:"Comment"`
 }
 
 // OpenDB = opens Postgres database
@@ -132,6 +139,7 @@ func GetDisplayName(id string) (result string) {
 	return
 }
 
+/*
 // GetEmail = get employee "email" using their "id"
 func GetEmail(id string) (result string) {
 	db := OpenDB()
@@ -141,6 +149,7 @@ func GetEmail(id string) (result string) {
 	row.Scan(&result)
 	return
 }
+*/
 
 // GetSize = get folder "size" using their "id"
 func GetSize(id string) (result string) {
@@ -247,11 +256,33 @@ func CompareStatus(id string) bool {
 
 // FindFile =
 func FindFile(email string) (string, string) {
-	hold := GetID(email)
+	//hold := GetID(email)
+	hold := ParseEmail(email)
 	//fmt.Println(hold)
 
 	path := "../Portfolios/"
 	path += hold
+	path += "/"
+	path += "portfolio.json"
+	fmt.Println("FindFile:", path)
+
+	file, err := ioutil.ReadFile(path)
+	if err != nil {
+		fmt.Println("Could not find the file")
+		return "ERROR", "ERROR"
+	}
+	fmt.Println(string(file))
+
+	data := Portfolio{}
+	_ = json.Unmarshal([]byte(file), &data)
+
+	return data.Information.Name, data.PortStatus.Status
+}
+
+// EditFile =
+func EditFile(user string, status string) {
+	path := "../Portfolios/"
+	path += user
 	path += "/"
 	path += "portfolio.json"
 	fmt.Println("PATH:", path)
@@ -259,36 +290,19 @@ func FindFile(email string) (string, string) {
 	file, err := ioutil.ReadFile(path)
 	if err != nil {
 		fmt.Println("Could not find the file")
-	} else {
-		fmt.Println(string(file))
 	}
+	fmt.Println(string(file))
 
 	data := Portfolio{}
 	_ = json.Unmarshal([]byte(file), &data)
 
-	//Terminal prompt to display status of portfolio, and prompt action
-	//fmt.Println("Portfolio Name is : ", data.Information.Name)
-	//fmt.Println("Portfolio Status is : ", data.Status)
-
-	return data.Information.Name, data.Status
-
-	/*
-		fmt.Println("What would you like to do with " + data.Information.Name + "'s portfolio? Press number to choose: ")
-		fmt.Println()
-		fmt.Println("	1: APPROVE portfolio")
-		fmt.Println("	2: DENY portfolio")
-		fmt.Println("	3: EXIT")
-		fmt.Println()
-		var choice int
-		fmt.Printf("Enter choice: ")
-		fmt.Scanln(&choice)
-
+	if !((status == "APPROVED" && data.PortStatus.Status == "APPROVED") || (status == "DENIED" && data.PortStatus.Status == "DENIED")) {
 		//Delete old json file so new information isn't appended to existing file.
-		remote3 := exec.Command("rm", userInput)
-		remote3.Run()
+		cmd := exec.Command("rm", path)
+		cmd.Run()
 
 		//Create new json file of same name, all data is same except for modified status.
-		f, err := os.OpenFile(userInput, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		f, err := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 		if err != nil {
 			return
 		}
@@ -296,27 +310,59 @@ func FindFile(email string) (string, string) {
 
 		// Up to this point, "data" is a new json file that contains the exact information of the old json file.
 		// If a choice 1 or 2 is made, Status will be changed before json file is remade.
-		switch choice {
-		case 1:
-			data.Status = "APPROVED"
+		if status == "APPROVED" {
+			data.PortStatus.Status = "APPROVED"
 			fmt.Println("Status set to APPROVED")
-		case 2:
-			data.Status = "DENIED"
-			fmt.Println("Status set to DENIED")
-		case 3:
-			fmt.Println("Exiting . . .")
-			b, _ := json.MarshalIndent(data, "", "    ") //new json file is remade with same name as old file.
-			f.Write(b)
-			f.Close()
-			os.Exit(0)
-		default:
 		}
+
+		if status == "DENIED" {
+			data.PortStatus.Status = "DENIED"
+			fmt.Println("Status set to DENIED")
+		}
+
 		b, _ := json.MarshalIndent(data, "", "    ") //new json file is remade with same name as old file.
 		f.Write(b)
 		f.Close()
-	*/
+	}
+}
 
-	// need page.html in my computer
-	// temp, _ := template.ParseFiles("page.html")
-	// temp.Execute(response, portfolio)
+// ParsePayload =
+func ParsePayload(payload string) (slice []string) {
+	var result string
+	result = strings.ReplaceAll(payload, "%7B", " ")
+	result = strings.ReplaceAll(result, "%22", " ")
+	result = strings.ReplaceAll(result, "%3A", " ")
+	result = strings.ReplaceAll(result, "%2C", " ")
+	result = strings.ReplaceAll(result, "%5C", " ")
+	result = strings.ReplaceAll(result, "%2F", " ")
+	result = strings.ReplaceAll(result, "%7D", " ")
+	result = strings.ReplaceAll(result, "%5D", " ")
+	result = strings.ReplaceAll(result, "%5B", " ")
+	result = strings.ReplaceAll(result, "%27", "'")
+	result = strings.ReplaceAll(result, "%40", "@")
+
+	slice = strings.Fields(result)
+	return slice
+
+}
+
+// GetEmail =
+func GetEmail(slice []string) string {
+	return slice[9]
+}
+
+// GetButton =
+func GetButton(slice []string) string {
+	return slice[5]
+}
+
+// ParseEmail =
+func ParseEmail(email string) (user string) {
+	index := strings.Index(email, "@")
+	if index == -1 {
+		return user
+	}
+
+	user = email[0:index]
+	return user
 }

@@ -51,6 +51,7 @@ var Status = map[string]string{
 	"portfoliostatus":     "rng",
 	"statusofmyportfolio": "rng",
 	"howsmyportfolio":     "rng",
+	"statusportfolio":     "rng",
 }
 
 // BotStatus = contains the possible "Status" related outgoing messages

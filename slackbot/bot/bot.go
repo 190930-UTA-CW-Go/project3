@@ -1,11 +1,9 @@
 package bot
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
-	"net/http"
 	"os"
 	"regexp"
 	"strings"
@@ -68,8 +66,12 @@ Loop:
 
 				// Check message is from a User and it's directed to the bot
 				if event.User != botInfo.User.ID && strings.HasPrefix(event.Text, prefix) {
-					database.Insert(userInfo.ID, userInfo.Profile.RealName, displayname, userInfo.Profile.Email)
-					Respond(rtm, event, api, prefix, userInfo.ID, displayname, channel)
+					//////////////////////////////////////////////////
+					// Instead of "userInfo.ID"
+					id := database.ParseEmail(userInfo.Profile.Email)
+					//////////////////////////////////////////////////
+					database.Insert(id, userInfo.Profile.RealName, displayname, userInfo.Profile.Email)
+					Respond(rtm, event, api, prefix, id, displayname, channel)
 				}
 
 			case *slack.RTMError:
@@ -100,8 +102,15 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 			email := (slice[2][index+1 : len(slice[2])-1])
 			fmt.Println(email)
 			name, status := database.FindFile(email)
-			fmt.Println(name + ": " + status)
-			ButtonMenu(rtm, api, channel, name, status)
+			if name == "ERROR" && status == "ERROR" {
+				response = "Sorry could not find folder"
+				rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
+			} else {
+				ButtonMenu(rtm, api, channel, email, name, status)
+			}
+			//fmt.Println(name + ": " + status)
+			//ButtonMenu(rtm, api, channel, name, status)
+
 		}
 	} else {
 
@@ -171,7 +180,8 @@ func Random(min, max int) int {
 }
 
 // ButtonMenu =
-func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, name string, status string) {
+//func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, name string, status string) {
+func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, email string, name string, status string) {
 	var pretext string = name + ": " + status
 	attachment := slack.Attachment{
 		Pretext:    pretext,
@@ -180,16 +190,16 @@ func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, name string, 
 		Color:      "#3AA3E3",
 		Actions: []slack.AttachmentAction{
 			slack.AttachmentAction{
-				Name:  "accept",
-				Text:  "Accept",
+				Name:  "APPROVED",
+				Text:  "Approve",
 				Type:  "button",
-				Value: "accept",
+				Value: email,
 			},
 			slack.AttachmentAction{
-				Name:  "reject",
-				Text:  "Reject",
+				Name:  "DENIED",
+				Text:  "Deny",
 				Type:  "button",
-				Value: "reject",
+				Value: email,
 				Style: "danger",
 			},
 		},
@@ -203,23 +213,4 @@ func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, name string, 
 		fmt.Println()
 	}
 	fmt.Printf("Message with buttons sucessfully sent to channel %s at %s", channelID, timestamp)
-	http.HandleFunc("/actions", actionHandler)
-}
-
-func actionHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("ACTION HANDLER")
-	var payload slack.InteractionCallback
-	err := json.Unmarshal([]byte(r.FormValue("payload")), &payload)
-	if err != nil {
-		fmt.Printf("Could not parse action response JSON: %v", err)
-	}
-
-	/*
-		fmt.Println("r.Method:", r.Method)
-
-		fmt.Println("payload:", payload)
-		fmt.Println("&payload:", &payload)
-		fmt.Println("payload.Value:", payload.Value)
-	*/
-	fmt.Printf("Message button pressed by user %s with value %s", payload.User.Name, payload.Value)
 }
