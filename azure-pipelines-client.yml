@@ -74,12 +74,6 @@ steps:
     tags: 'latest'
 
 
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)/deployment.yaml'
-    artifact: 'manifest'
-    publishLocation: 'pipeline'
-
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(GOPATH)/src/github.com/$(build.repository.name)/deployment.yaml'
