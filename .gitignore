@@ -13,3 +13,6 @@
 
 # AWS key
 *.pem
+
+# json Portfolios
+*.json
