@@ -57,7 +57,6 @@ steps:
         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure
     fi
-    cd ..
     cd slackbot
     go build -o botbin .
   workingDirectory: '$(modulePath)'
