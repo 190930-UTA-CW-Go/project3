@@ -37,7 +37,7 @@ func main() {
 	http.HandleFunc("/grader/rate", grader.Rate)
 	http.HandleFunc("/grader/submit", grader.Submit)
 	http.HandleFunc("/grader/view", grader.View)
-	http.HandleFunc("/grader/upload", grader.View)
+	http.HandleFunc("/grader/upload", grader.Upload)
 
 	// The following handlers are located inside the new package.
 	http.HandleFunc("/new", new.User)

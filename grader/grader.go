@@ -82,12 +82,12 @@ func Rate(w http.ResponseWriter, r *http.Request) {
 	temp.Execute(w, portfolio)
 }
 
-// Submit is the handler for submitting the portfolio with the new rating
+// Submit is the handler for creating a new portfolio
 func Submit(w http.ResponseWriter, r *http.Request) {
 	hand = path + "submit.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 
 	//Take inputted fullname from profile and use it to name the json file.
@@ -99,7 +99,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	remote3 := exec.Command("rm", filename)
 	remote3.Run()
 
-	remote5 := exec.Command("mv", filename, "./portfolios")
+	remote5 := exec.Command("mv", username, "./portfolios")
 	remote5.Run()
 
 	//Creates and opens a new json file in the user's inputted fullname.
@@ -110,7 +110,6 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	}
 	defer f.Close()
 
-	// The following assigns the form values to the structs going into the json file
 	info.Title = r.FormValue("jobtitle")
 	info.Email = r.FormValue("email")
 	info.Phone = r.FormValue("phone")
@@ -124,16 +123,15 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
-	portStatus.Status = r.FormValue("rating")
-	portStatus.Comment = r.FormValue("comments")
+	rating.Status = r.FormValue("rating")
+	rating.Comment = r.FormValue("comment")
 
 	portfolio.Information = info
 	portfolio.About = about
 	portfolio.Education = education
 	portfolio.Project = project
-	portfolio.PortStatus = portStatus
+	portfolio.PortStatus = rating
 
-	// The following packages the structs into the json file.
 	b, err := json.MarshalIndent(portfolio, "", "    ")
 	if err != nil {
 		http.Error(w, err.Error(), 500)
@@ -141,8 +139,6 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	}
 	f.Write(b)
 	f.Close()
-
-	// Serve and execute
 	http.ServeFile(w, r, hand)
 	temp.Execute(w, portfolio)
 }
@@ -214,5 +210,5 @@ var info = Information{}
 var about = About{}
 var education = Education{}
 var project = Project{}
-var portStatus = PortStatus{}
+var rating = PortStatus{}
 var jsonFile string
