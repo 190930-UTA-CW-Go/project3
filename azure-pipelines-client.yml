@@ -48,4 +48,4 @@ steps:
     containerRegistry: 'revgoproject3'
     repository: 'revgoproject3/client'
     command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    Dockerfile: '**/Client/Dockerfile'
