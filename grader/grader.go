@@ -119,13 +119,14 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	project.Tech = r.FormValue("techused")
 	project.Desc = r.FormValue("projectdesc")
 
-	//portStatus = r.FormValue("status")
+	portStatus.Status = r.FormValue("rating")
+	portStatus.Comment = r.FormValue("comments")
 
 	portfolio.Information = info
 	portfolio.About = about
 	portfolio.Education = education
 	portfolio.Project = project
-	portfolio.Status = r.FormValue("rating")
+	portfolio.PortStatus = portStatus
 
 	// The following packages the structs into the json file.
 	b, err := json.MarshalIndent(portfolio, "", "    ")
@@ -149,7 +150,7 @@ type Portfolio struct {
 	About       About
 	Education   Education
 	Project     Project
-	Status      string
+	PortStatus  PortStatus
 }
 
 // Information stores all of the relevant info on the person creating the portfolio.
