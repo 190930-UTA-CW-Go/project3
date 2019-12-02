@@ -18,7 +18,7 @@
         "Desc": "In this elegant indie film, produced, written and filmed by me. I star as Bennet Richardson, a brilliant young man going into law school. Things spice up, when is crazy ex-girlfriend decides to follow him."
     },
     "PortStatus": {
-        "Status": "UNCHECKED",
-        "Comment": "UNCHECKED"
+        "Status": "fail",
+        "Comment": ""
     }
 }
