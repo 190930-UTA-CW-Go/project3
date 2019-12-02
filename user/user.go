@@ -78,7 +78,7 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 	hand = path + "dash.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 	username = r.FormValue("username")
 	temp.Execute(w, username)
@@ -89,7 +89,7 @@ func MakeNew(w http.ResponseWriter, r *http.Request) {
 	hand = path + "new.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 	temp.Execute(w, nil)
 }
@@ -99,7 +99,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 	hand = path + "submit.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 
 	//Take inputted fullname from profile and use it to name the json file.
@@ -188,7 +188,7 @@ func Printer(w http.ResponseWriter, r *http.Request) {
 	// Read the json file
 	portFile, err := os.Open(jsonFile)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error opening json files:", err)
 	}
 	defer portFile.Close()
 	byteValue, _ := ioutil.ReadAll(portFile)
@@ -198,7 +198,7 @@ func Printer(w http.ResponseWriter, r *http.Request) {
 
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 	temp.Execute(w, portfolio)
 }
@@ -210,13 +210,13 @@ func Status(w http.ResponseWriter, r *http.Request) {
 	hand = path + "status.html"
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 
 	// Opens the .json file.
 	readjson, readerr := os.Open(jsonFile)
 	if readerr != nil {
-		panic(readerr)
+		log.Fatal("Error opening json files:", readerr)
 	}
 	defer readjson.Close()
 
@@ -236,7 +236,7 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 
 	temp, err := template.ParseFiles(hand)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Error parsing handler files:", err)
 	}
 	temp.Execute(w, nil)
 
