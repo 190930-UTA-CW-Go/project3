@@ -12,7 +12,8 @@ spec:
       containers:
       - name: revgoclient
         image: revgoproject3/client
-        
+---
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: revgo
