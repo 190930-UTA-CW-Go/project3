@@ -8,6 +8,8 @@ import (
 	"os"
 	"os/exec"
 	"text/template"
+
+	"github.com/190930-UTA-CW-Go/project3/user/downloadfile"
 )
 
 // Set these global variable to save time in each handler
@@ -169,6 +171,7 @@ func Submit(w http.ResponseWriter, r *http.Request) {
 func Edit(w http.ResponseWriter, r *http.Request) {
 	// Sets the value of the jsonfile variable.
 	jsonFile = username + ".json"
+	downloadfile.DownloadAWS(username)
 
 	hand = path + "edit.html"
 	temp, err := template.ParseFiles(hand)
@@ -216,6 +219,7 @@ func Printer(w http.ResponseWriter, r *http.Request) {
 // Status is the handler for checking the status of your portfolio
 func Status(w http.ResponseWriter, r *http.Request) {
 	jsonFile = username + ".json"
+	downloadfile.DownloadAWS(username)
 
 	hand = path + "status.html"
 	temp, err := template.ParseFiles(hand)

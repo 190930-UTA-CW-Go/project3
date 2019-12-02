@@ -61,4 +61,5 @@ func CreateFile(username string) {
 	fmt.Println("Creating file in AWS for", username)
 	exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " mkdir Portfolios/" + username)).Run()
 	fmt.Println("File Created")
+	exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " touch Portfolios/" + username + "/" + username + ".json")).Run()
 }
