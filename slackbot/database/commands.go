@@ -72,6 +72,7 @@ func NewFolder(username string) bool {
 
 // GetStatus = get date and time of last time folder was modified
 // Format date and time using Go time constants (look at documentation online)
+// If folder doesn't exist will return error for Slack bot to handle
 func GetStatus(username string) (bool, string) {
 	output, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " stat Portfolios/" + username + " | egrep 'Modify'")).Output()
 	if err != nil {
@@ -89,47 +90,42 @@ func GetStatus(username string) (bool, string) {
 	return true, result
 }
 
-// FindFile =
-func FindFile(email string) (string, string) {
-	hold := ParseEmail(email)
-
-	path := "../Portfolios/"
-	path += hold
-	path += "/"
-	path += "portfolio.json"
-	fmt.Println("FindFile:", path)
-
-	file, err := ioutil.ReadFile(path)
+// FindFile = downloads json file from AWS machine and returns the "Name" and "Status" values
+// If json file doesn't exist will return error for Slack bot to handle
+func FindFile(username string) (bool, string, string) {
+	cmd := exec.Command("scp", "-i", key, amazon+":/home/ec2-user/Portfolios/"+username+"/"+username+".json", "./temp")
+	_, err := cmd.CombinedOutput()
 	if err != nil {
-		fmt.Println("Could not find the file")
-		return "ERROR", "ERROR"
+		return false, "ERROR", "ERROR"
 	}
-	fmt.Println(string(file))
+
+	fmt.Println("Downloading File....")
+
+	path := "./temp/" + username + ".json"
+	file, _ := ioutil.ReadFile(path)
 
 	data := Portfolio{}
 	_ = json.Unmarshal([]byte(file), &data)
 
-	return data.Information.Name, data.PortStatus.Status
+	fmt.Println("Name:", data.Information.Name)
+	fmt.Println("Status:", data.PortStatus.Status)
+
+	return true, data.Information.Name, data.PortStatus.Status
 }
 
-// EditFile =
-func EditFile(user string, status string) {
-	path := "../Portfolios/"
-	path += user
-	path += "/"
-	path += "portfolio.json"
-	fmt.Println("PATH:", path)
-
-	file, err := ioutil.ReadFile(path)
-	if err != nil {
-		fmt.Println("Could not find the file")
-	}
-	fmt.Println(string(file))
+// EditFile = saves json info and remakes it with the changed info
+// Then uploads new json file to AWS machine
+// Not as much error checking because previous step "FindFile" should of handled it (still be careful)
+func EditFile(username string, status string) {
+	path := "./temp/" + username + ".json"
+	file, _ := ioutil.ReadFile(path)
 
 	data := Portfolio{}
 	_ = json.Unmarshal([]byte(file), &data)
 
-	if !((status == "APPROVED" && data.PortStatus.Status == "APPROVED") || (status == "DENIED" && data.PortStatus.Status == "DENIED")) {
+	//fmt.Println(string(file))
+
+	if (status == "APPROVED" && data.PortStatus.Status != "APPROVED") || (status == "DENIED" && data.PortStatus.Status != "DENIED") {
 		//Delete old json file so new information isn't appended to existing file.
 		cmd := exec.Command("rm", path)
 		cmd.Run()
@@ -156,6 +152,9 @@ func EditFile(user string, status string) {
 		b, _ := json.MarshalIndent(data, "", "    ") //new json file is remade with same name as old file.
 		f.Write(b)
 		f.Close()
+
+		// Upload new json file to AWS machine
+		exec.Command("bash", "-c", ("scp -i " + key + " " + path + " " + amazon + ":/home/ec2-user/Portfolios/" + username)).Run()
 	}
 }
 
@@ -197,4 +196,19 @@ func ParseEmail(email string) (user string) {
 
 	user = email[0:index]
 	return user
+}
+
+// CheckAdmin = check if username is in "admin.txt"
+func CheckAdmin(username string) bool {
+	path := "./admin"
+	file, _ := ioutil.ReadFile(path)
+	slice := strings.Split(string(file), "\n")
+	fmt.Println(slice)
+
+	for _, v := range slice {
+		if v == username {
+			return true
+		}
+	}
+	return false
 }

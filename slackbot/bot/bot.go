@@ -60,11 +60,8 @@ Loop:
 
 				// Check message is from a User and it's directed to the bot
 				if event.User != botInfo.User.ID && strings.HasPrefix(event.Text, prefix) {
-					//////////////////////////////////////////////////
-					// Instead of "userInfo.ID"
+					// Extract username from email
 					user := database.ParseEmail(userInfo.Profile.Email)
-					//////////////////////////////////////////////////
-					//database.Insert(id, userInfo.Profile.RealName, displayname, userInfo.Profile.Email)
 					Respond(rtm, event, api, prefix, user, displayname, channel)
 				}
 
@@ -90,28 +87,34 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 	var response string
 
 	// To trigger "review"
-	// Ex) @gopher review user@email.com
+	// Ex) @gopher review username
 	if strings.Contains(msg.Text, "review") {
-		slice := strings.Fields(msg.Text)
-		if len(slice) == 3 {
-			// Parse out email address because Slack has different formatting
-			index := strings.Index(slice[2], "|")
-			email := (slice[2][index+1 : len(slice[2])-1])
-			fmt.Println(email)
+		// Check user triggering review has admin rights
+		if database.CheckAdmin(user) == false {
+			response = "Need Administrator Permission."
+			rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 
-			// Search
-			name, status := database.FindFile(email)
-			if name == "ERROR" && status == "ERROR" {
-				response = "Sorry could not find folder"
-				rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
+		} else {
+			// Extract "username" from message
+			slice := strings.Fields(msg.Text)
+			if len(slice) == 3 {
+				flag, name, status := database.FindFile(slice[2])
+				if flag == false && name == "ERROR" && status == "ERROR" {
+					response = "Sorry could not find folder."
+					rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
+				} else {
+					ButtonMenu(rtm, api, channel, slice[2], name, status)
+				}
 			} else {
-				ButtonMenu(rtm, api, channel, email, name, status)
+				response = "Sorry could not recognize command."
+				rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 			}
 		}
 	} else {
 
 		text := TrimString(msg.Text, prefix)
 
+		// Checks which map is triggered
 		hiValue, hiBool := UserHi[text]
 		byeValue, byeBool := UserBye[text]
 		portValue, portBool := Portfolio[text]
@@ -137,17 +140,17 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 					response = portValue + displayname
 				}
 			} else {
-				response = "Sorry you might already have a folder"
+				response = "Sorry you might already have a folder."
 			}
 		} else if statusBool {
-			statB, statV := database.GetStatus(user)
-			if statB == true {
-				response = "Last Updated: " + statV
+			statusFlag, statusValue := database.GetStatus(user)
+			if statusFlag == true {
+				response = "Last Updated: " + statusValue
 			} else {
-				response = "Sorry I could not find your portfolio"
+				response = "Sorry I could not find your portfolio."
 			}
 		} else {
-			response = "Sorry I don't understand"
+			response = "Sorry I don't understand."
 		}
 		rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 	}
@@ -177,7 +180,7 @@ func Random(min, max int) int {
 }
 
 // ButtonMenu = sets up the look of the button and sends it
-func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, email string, name string, status string) {
+func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, username string, name string, status string) {
 	var pretext string = name + ": " + status
 	attachment := slack.Attachment{
 		Pretext:    pretext,
@@ -189,13 +192,13 @@ func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, email string,
 				Name:  "APPROVED",
 				Text:  "Approve",
 				Type:  "button",
-				Value: email,
+				Value: username,
 			},
 			slack.AttachmentAction{
 				Name:  "DENIED",
 				Text:  "Deny",
 				Type:  "button",
-				Value: email,
+				Value: username,
 				Style: "danger",
 			},
 		},
