@@ -15,7 +15,4 @@ func DownloadAWS(name string) {
 		return
 	}
 	fmt.Println(fmt.Sprint(err) + ": " + string(output))
-
-	fmt.Println("Downloading file....")
-
 }
