@@ -1,3 +1,17 @@
+apiVersion: v1
+kind: Service
+apiVersion: v1
+metadata:
+  name: exposeme
+spec:
+  type: LoadBalancer
+  selector:
+    app: revgoclient
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9000
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -12,6 +26,8 @@ spec:
       containers:
       - name: revgoclient
         image: revgoproject3/client
+        ports:
+         - containerPort: 9000
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
