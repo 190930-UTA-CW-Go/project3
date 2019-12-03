@@ -34,7 +34,6 @@ steps:
         curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
         dep ensure
     fi
-    cd Client
     go build -o clientbin .
   workingDirectory: '$(modulePath)'
   displayName: 'Get dependencies, then build'
@@ -42,10 +41,34 @@ steps:
 - task: DockerInstaller@0
   inputs:
     dockerVersion: '17.09.0-ce'
-
 - task: Docker@2
   inputs:
     containerRegistry: 'revgoproject3'
     repository: 'revgoproject3/client'
     command: 'buildAndPush'
     Dockerfile: '**/Client/Dockerfile'
+    tags: 'latest'
+
+- script: |
+    go version
+    go get -v -t -d ./...
+    if [ -f Gopkg.toml ]; then
+        curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+        dep ensure
+    fi
+    cd slackbot
+    go build -o botbin .
+  workingDirectory: '$(modulePath)'
+  displayName: 'Get dependencies, then build'
+
+- task: DockerInstaller@0
+  inputs:
+    dockerVersion: '17.09.0-ce'
+    
+- task: Docker@2
+  inputs:
+    containerRegistry: 'revgoproject3'
+    repository: 'revgoproject3/slackbot'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+    tags: 'latest'
