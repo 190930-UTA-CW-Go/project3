@@ -16,9 +16,11 @@ variables:
   modulePath: '$(GOPATH)/src/github.com/$(build.repository.name)' # Path to the module's code
 
 steps:
+#we need go 1.13 to run certain code this installs newer version
 - task: GoTool@0
   inputs:
     version: '1.13'
+#sets up go wrokspace
 - script: |
     mkdir -p '$(GOBIN)'
     mkdir -p '$(GOPATH)/pkg'
@@ -30,13 +32,14 @@ steps:
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
 
+#downloads rego.pem that client uses to connect over ssh on aws
 - task: DownloadSecureFile@1
   name: rego
   inputs:
     secureFile: 'rego.pem'
 - script: |
     sudo mv $(rego.secureFilePath) $(modulePath)
-
+#downloads the code and builds client binary
 - script: |
     go version
     go get -v -t -d ./...
@@ -47,10 +50,11 @@ steps:
     go build -o clientbin .
   workingDirectory: '$(modulePath)'
   displayName: 'Get dependencies, then build'
-
+#installs docker
 - task: DockerInstaller@0
   inputs:
     dockerVersion: '17.09.0-ce'
+#builds and publishes docker client image to docker hub
 - task: Docker@2
   inputs:
     containerRegistry: 'revgoproject3'
@@ -58,7 +62,7 @@ steps:
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
     tags: 'latest'
-
+#downloads the code and builds slackbot binary
 - script: |
     go version
     go get -v -t -d ./...
@@ -75,6 +79,7 @@ steps:
   inputs:
     dockerVersion: '17.09.0-ce'
     
+#builds and publishes docker slackbot image to docker hub
 - task: Docker@2
   inputs:
     containerRegistry: 'revgoproject3'
@@ -83,7 +88,8 @@ steps:
     Dockerfile: '**/slackbot/Dockerfile'
     tags: 'latest'
 
-
+#published deployment.yaml as a artifact so that the release pipeline
+#can deploy the correct configurations for the kubernetes cluster
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(GOPATH)/src/github.com/$(build.repository.name)/deployment.yaml'
