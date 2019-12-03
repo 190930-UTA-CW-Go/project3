@@ -42,5 +42,5 @@ spec:
       containers:
       - name: revgoslackbot
         image: revgoproject3/slackbot
-      restartPolicy: Never
+      restartPolicy: "Never"
 ---
