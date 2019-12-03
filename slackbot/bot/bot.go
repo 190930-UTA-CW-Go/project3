@@ -18,7 +18,6 @@ import (
 // It Connects, Responds, or Exits (when interrupted)
 func StartBot() {
 	// Connect to RTM API with Slack token
-	//token := os.Getenv("SLACK_TOKEN")
 	token := os.Getenv("SLACK_API")
 	api := slack.New(token)
 	rtm := api.NewRTM()
@@ -41,10 +40,6 @@ Loop:
 
 				channel := event.Channel
 				fmt.Println("CHANNEL:", channel)
-				/*
-					idk, _ := rtm.GetIMChannels()
-					fmt.Println(idk)
-				*/
 
 				// Get bot info
 				botInfo := rtm.GetInfo()
@@ -55,7 +50,6 @@ Loop:
 				if err != nil {
 					fmt.Println("USER INFO ERROR:", err)
 					goto Loop
-					//return
 				}
 
 				// If User DisplayName is not set use RealName
@@ -68,10 +62,10 @@ Loop:
 				if event.User != botInfo.User.ID && strings.HasPrefix(event.Text, prefix) {
 					//////////////////////////////////////////////////
 					// Instead of "userInfo.ID"
-					id := database.ParseEmail(userInfo.Profile.Email)
+					user := database.ParseEmail(userInfo.Profile.Email)
 					//////////////////////////////////////////////////
-					database.Insert(id, userInfo.Profile.RealName, displayname, userInfo.Profile.Email)
-					Respond(rtm, event, api, prefix, id, displayname, channel)
+					//database.Insert(id, userInfo.Profile.RealName, displayname, userInfo.Profile.Email)
+					Respond(rtm, event, api, prefix, user, displayname, channel)
 				}
 
 			case *slack.RTMError:
@@ -92,15 +86,20 @@ Loop:
 // Respond = Bot responds using data from "data.go"
 // Check if User message exists in map data and respond accordingly
 // Append the User's display name to the messages
-func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix string, id string, displayname string, channel string) {
+func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix string, user string, displayname string, channel string) {
 	var response string
+
+	// To trigger "review"
+	// Ex) @gopher review user@email.com
 	if strings.Contains(msg.Text, "review") {
-		//Review(rtm, msg, api)
 		slice := strings.Fields(msg.Text)
 		if len(slice) == 3 {
+			// Parse out email address because Slack has different formatting
 			index := strings.Index(slice[2], "|")
 			email := (slice[2][index+1 : len(slice[2])-1])
 			fmt.Println(email)
+
+			// Search
 			name, status := database.FindFile(email)
 			if name == "ERROR" && status == "ERROR" {
 				response = "Sorry could not find folder"
@@ -108,9 +107,6 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 			} else {
 				ButtonMenu(rtm, api, channel, email, name, status)
 			}
-			//fmt.Println(name + ": " + status)
-			//ButtonMenu(rtm, api, channel, name, status)
-
 		}
 	} else {
 
@@ -134,7 +130,7 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 				response = byeValue + displayname
 			}
 		} else if portBool {
-			if database.NewFolder(id) == true {
+			if database.NewFolder(user) == true {
 				if portValue == "rng" {
 					response = BotPortfolio[Random(0, len(BotPortfolio))]
 				} else {
@@ -144,10 +140,11 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 				response = "Sorry you might already have a folder"
 			}
 		} else if statusBool {
-			if database.CompareStatus(id) == true {
-				response = "Your portfolio is updated!"
+			statB, statV := database.GetStatus(user)
+			if statB == true {
+				response = "Last Updated: " + statV
 			} else {
-				response = "Your portfolio is not updated yet"
+				response = "Sorry I could not find your portfolio"
 			}
 		} else {
 			response = "Sorry I don't understand"
@@ -179,8 +176,7 @@ func Random(min, max int) int {
 	return min + rand.Intn(max-min)
 }
 
-// ButtonMenu =
-//func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, name string, status string) {
+// ButtonMenu = sets up the look of the button and sends it
 func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, email string, name string, status string) {
 	var pretext string = name + ": " + status
 	attachment := slack.Attachment{
@@ -207,10 +203,13 @@ func ButtonMenu(rtm *slack.RTM, api *slack.Client, channel string, email string,
 
 	message := slack.MsgOptionAttachments(attachment)
 	channelID, timestamp, err := api.PostMessage(channel, slack.MsgOptionText("", false), message)
-	//channelID, timestamp, err := rtm.PostMessage(channel, slack.MsgOptionText("", false), message)
+
+	////////////////////////////////////////////////////////
+	// Changed ListenAndServe to closure goroutine so these messages won't show anymore
 	if err != nil {
-		fmt.Printf("Could not send message: %v", err)
-		fmt.Println()
+		fmt.Println("BUTTON ERROR: Failed to send message")
 	}
-	fmt.Printf("Message with buttons sucessfully sent to channel %s at %s", channelID, timestamp)
+	fmt.Printf("BUTTON SUCCESS: Message sent to channel %s at %s", channelID, timestamp)
+	///////////////////////////////////////////////////////
+
 }
