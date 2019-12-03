@@ -74,7 +74,7 @@ func NewFolder(username string) bool {
 // Format date and time using Go time constants (look at documentation online)
 // If folder doesn't exist will return error for Slack bot to handle
 func GetStatus(username string) (bool, string) {
-	output, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " stat Portfolios/" + username + " | egrep 'Modify'")).Output()
+	output, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " stat Portfolios/" + username + "/" + username + ".json " + "| egrep 'Modify'")).Output()
 	if err != nil {
 		return false, "ERROR"
 	}
