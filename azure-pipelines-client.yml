@@ -27,10 +27,14 @@ steps:
     echo '##vso[task.prependpath]$(GOROOT)/bin'
   displayName: 'Set up the Go workspace'
 
+- task: DownloadSecureFile@1
+  name: rego
+  inputs:
+    secureFile: 'rego.pem'
 - script: |
-    - task: DownloadSecureFile@1
-      inputs:
-        secureFile: 'rego.pem'
+    sudo mv $(rego.secureFilePath) $(modulePath)
+
+- script: |
     go version
     go get -v -t -d ./...
     if [ -f Gopkg.toml ]; then
