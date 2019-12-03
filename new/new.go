@@ -50,9 +50,6 @@ func Dash(w http.ResponseWriter, r *http.Request) {
 func CheckForFile(username string) bool {
 	var doesExist bool
 	fmt.Println("Checking for file named", username)
-	//currently not properly connecting to database
-	//doesExist, err := exec.Command("bash", "-c", ("ssh -i " + key + " " + amazon + " if [ -d /Portfolios" + username + " ] then doesExist=true else doesExist=false fi")).Output() //not currently working
-	fmt.Println(doesExist) //testing
 	return doesExist
 }
 
