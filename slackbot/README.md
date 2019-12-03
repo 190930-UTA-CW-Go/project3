@@ -42,11 +42,12 @@ RevatureGo-Slackbot
 # Commands
 ```bash
 For command list can look at "slackbot/bot/data.go"
+Commands are parsed of punctuations
 Examples:
-
 "Hellos"
 @gopher hi
 @gopher hello
+@gopher hi!!!! (will work because punctuations are parsed)
 
 "Goodbyes"
 @gopher bye

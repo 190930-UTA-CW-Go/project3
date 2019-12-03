@@ -102,6 +102,9 @@ func Respond(rtm *slack.RTM, msg *slack.MessageEvent, api *slack.Client, prefix 
 				if flag == false && name == "ERROR" && status == "ERROR" {
 					response = "Sorry could not find folder."
 					rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
+				} else if flag == true && name == "" && status == "" {
+					response = slice[2] + " has not started their portfolio yet."
+					rtm.SendMessage(rtm.NewOutgoingMessage(response, msg.Channel))
 				} else {
 					ButtonMenu(rtm, api, channel, slice[2], name, status)
 				}
