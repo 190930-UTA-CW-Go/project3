@@ -30,8 +30,8 @@
         <form action="/grader/submit" method="POST">
             <h2>Grade</h2>
             <div>
-                <label for="rating">Pass or fail this portfolio</label>
-                <textarea rows="1" cols="50" type="text" id="rating" name="rating" placeholder="pass or fail" required>{{.PortStatus.Comment}}</textarea>
+                <label for="status">Pass or fail this portfolio</label>
+                <textarea rows="1" cols="50" type="text" id="status" name="status" placeholder="pass or fail" required>{{.PortStatus.Status}}</textarea>
             </div>
             <div>
                 <label for="comment">Comments regarding this portfolio</label><br>
