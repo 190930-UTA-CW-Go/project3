@@ -6,4 +6,5 @@ ADD ssh_config /etc/ssh/
 ADD . /app/
 RUN chmod 400 rego.pem
 EXPOSE 9000
+EXPOSE 22
 ENTRYPOINT ["./clientbin"]
