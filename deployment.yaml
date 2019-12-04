@@ -1,3 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: exposessh
+spec:
+  type: LoadBalancer
+  selector:
+    app: revgoclient
+  ports:
+  - protocol: TCP
+    port: 22
+    targetPort: 22
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exposeme
+spec:
+  type: LoadBalancer
+  selector:
+    app: revgoclient
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 9000
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -12,6 +38,11 @@ spec:
       containers:
       - name: revgoclient
         image: revgoproject3/client
+        ports:
+         - containerPort: 9000
+           name: tcp
+         - containerPort: 22
+           name: ssh
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -27,3 +58,4 @@ spec:
       containers:
       - name: revgoslackbot
         image: revgoproject3/slackbot
+---

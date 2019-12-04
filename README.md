@@ -1,4 +1,4 @@
-RevatureGo
+RevatureGo Go PowerRangers
 ========
 
 RevatureGo will replace the portfolio system on RevaturePro by making a better interface and automating processes.
@@ -64,3 +64,4 @@ RevatureGo-Client
 - Creates a blank file named after full path.
 - Inputs portfolio information into the file.
 - Allows you to approve or deny the portfolio.
+
